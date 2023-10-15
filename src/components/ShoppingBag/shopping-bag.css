@@ -1,0 +1,127 @@
+/* SHOPPING BAG */
+.container-big {
+    display: grid;
+    grid-template-columns: repeat(2, 0fr);
+    grid-template-rows: repeat(auto-fill, 1fr);
+    grid-column-gap: 50px;  
+    position: relative;
+    left: 100px;
+    top: 15px;
+  }
+  .product {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 654px;
+    height: 330px;
+    position: relative;
+    margin-bottom: 15px;
+    gap: 1rem;
+  }
+  .product-title {
+    color: var(--clr-black);
+    text-align: center;
+    font-weight: var(--fw-2);
+    font-size: var(--fs-2);
+    font-family: 'Noto Sans JP', sans-serif;
+    position: relative;
+    width: 118px;
+    height: 31px;
+  }
+  .product-price {
+    color: var(--clr-black);
+    text-align: center;
+    font-weight: var(--fw-2);
+    font-size: var(--fs-2);
+    font-family: 'Noto Sans JP', sans-serif;
+    position: relative;
+    width: 118px;
+    height: 31px;
+  }
+  .plus {
+    width: 25px;
+    height: 25px;
+    position: relative;
+    cursor: pointer;
+  }
+  .rectangle-6 {
+    background: var(--clr-black);
+    width: 92px;
+    height: 29px;
+    position: relative;
+    color: var(--primary-yellow);
+    text-align: center;
+    font-family: "Noto Sans JP", sans-serif;
+    font-size: var(--fs-2);
+  }
+  .rectangle-6:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  .rectangle-6:hover {
+    cursor: default;
+  }
+  .minus {
+    width: 25px;
+    height: 25px;
+    position: relative;
+    cursor: pointer;
+  }
+  .counter {
+    display: flex;
+    gap: 5px;
+  }
+  .shopping-container {
+    display: flex;
+    align-items: center;
+  }
+  .buy {
+    position: absolute;
+    right: 225px;
+    top: 300px;
+    cursor: pointer;
+  }
+  .rectangle-2 {
+    background: var(--clr-black);
+    transition: background 0.2s;
+  }
+  .buy2 {
+    color: var(--primary-yellow);
+    text-align: center;
+    font-weight: var(--fw-1);
+    font-size: var(--fs-2);
+    position: absolute;
+    left: 30px;
+    top: 0px;
+    width: 115px;
+    height: 33px;
+    transition: color 0.2s;
+  }
+  .buy:hover .rectangle-2 {
+    background: var(--primary-yellow);
+    transition: background 0.2s;
+  }
+  .buy:hover .buy2 {
+    color: var(--clr-black);
+    transition: color 0.2s;
+  }
+
+@media screen and (max-width: 500px) {
+  .buy {
+    right: 300px;
+    top: 260px;
+  }
+  .product {
+    flex-direction: column;
+    align-items: center;
+    width: 180px;
+    height: 330px;
+    margin-bottom: 140px;
+  }
+  .container-big {
+    grid-column-gap: 20px;
+    left: 25px;
+    top: 55px;
+  }
+}

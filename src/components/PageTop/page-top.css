@@ -1,0 +1,43 @@
+/* PAGE TOP */
+.page-top {
+    animation: pendulum ease-in-out 2s infinite alternate;
+    background-image:url(https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/kbxxxd6cbmvcwxek93tw) ;
+    bottom: 0px;
+    position: fixed;
+    display: block;
+    width: 109px;
+    height: 107px;
+    overflow: hidden;
+    text-indent: 100%;
+    white-space: nowrap;
+    background-size: 109px auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+    transform-origin: bottom;
+    cursor: pointer;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1;
+  }
+  
+@keyframes pendulum {
+    0% {
+        -webkit-transform: rotate(2deg);
+        transform: rotate(2deg)
+    }
+  
+    100% {
+        -webkit-transform: rotate(-2deg);
+        transform: rotate(-2deg)
+    }
+} 
+  
+@media screen and (max-width: 500px) {
+    .page-top{
+        width: 70px;
+        height: 70px;
+        background-size: 70px auto;
+        right: 5px;
+        bottom: 50px;
+    }
+}

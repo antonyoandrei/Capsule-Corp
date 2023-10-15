@@ -1,0 +1,84 @@
+/* RESET */
+a,
+      button,
+      input,
+      select,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      * {
+        margin: 0;
+        padding: 0;
+        border: none;
+        text-decoration: none;
+        appearance: none;
+        background: none;
+        font-family: 'Oswald';
+        scroll-behavior: smooth;
+}
+
+
+/* ROOT */
+:root {
+  --primary-yellow: #ffb200;
+  --primary-yellow-dark: #ffb300cc;
+  --clr-black: #000000;
+  --clr-white: #ffffff;
+
+  --fs-1: 1rem;
+  --fs-2: 1.25rem;
+  --fs-3: 1.5rem;
+  --fs-4: 1.75rem;
+  --fs-5: 2rem;
+
+  --fw-1: 400;
+  --fw-2: 700;
+  --fw-3: 1000;
+}
+
+
+/* FONTS */
+@font-face {
+  font-family: 'Oswald';
+  src: url('../fonts/Oswald.woff2') format('woff2'),
+    url('../fonts/Oswald.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Sans JP';
+  src: url('../fonts/NotoSans.woff2') format('woff2'),
+    url('../fonts/NotoSans.woff2') format('woff');
+  font-display: swap;
+}
+
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+    width: 0.6rem;
+}
+  ::-webkit-scrollbar-track {
+    background: var(--clr-black);
+}
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary-yellow-dark);
+    border-radius: 0.3rem;
+}
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-yellow);
+}
+
+
+/* TRANSITION */
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity ease-in-out 0.4s;
+}
+
+.shown {
+  opacity: 1;
+  transition: opacity ease-in-out 0.4s;
+}

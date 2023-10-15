@@ -1,0 +1,19 @@
+/* FRAME */
+.frame {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(auto-fill, 1fr);
+    grid-column-gap:25px;
+    grid-row-gap: 20px;
+    position: relative;
+    margin-left: 8rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+@media screen and (max-width: 500px) {
+  .frame {
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: 0.85rem;
+  }
+}

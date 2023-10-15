@@ -1,0 +1,91 @@
+/* ABOUT  */
+.frame-3 {
+  display: flex;
+  top: 2rem;
+  position: relative;
+  justify-content: center;
+}
+.bg-main-02-1 {
+  height: 440px;
+  position: relative;
+  box-shadow: 9px 10px 46px -8px rgba(0,0,0,0.75);
+}
+.img-main-02-1 {
+  flex-shrink: 0;
+  height: 375px;
+  position: absolute;
+  top: 70px;
+  left: -800px;
+  animation: about-main-bounce-x 3s ease-in-out infinite;
+  animation-timing-function: cubic-bezier(.4,.245,.58,1.42);
+}
+.about-animation-container {
+    animation: about-main-bounce-y 3s ease-in-out infinite;
+    animation-timing-function: cubic-bezier(.4,.245,.58,1.42);
+}
+.about-text {
+  color: var(--clr-black);
+  text-align: left;
+  font: var(--fw-1) var(--fs-1) "Noto Sans JP", sans-serif;
+  position: absolute;
+  top: 460px;
+  width: 635px;
+}
+
+@keyframes about-main-bounce-x {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    5% {
+        -webkit-transform: scale(1.05,1);
+        transform: scale(1.05,1)
+    }
+
+    100%,15% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+}
+@keyframes about-main-bounce-y {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+
+    5% {
+        -webkit-transform: scale(1,.95);
+        transform: scale(1,.95)
+    }
+
+    10%,100% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .img-main-02-1 {
+        flex-shrink: 0;
+        height: 188px;
+        position: absolute;
+        top: 21px;
+        left: -372px;
+        animation: about-main-bounce-x 3s ease-in-out infinite;
+        animation-timing-function: cubic-bezier(.4,.245,.58,1.42);
+    }
+    .bg-main-02-1 {
+        height: 194px;
+        position: relative;
+        box-shadow: 9px 10px 46px -8px rgba(0,0,0,0.75);
+    }
+    .about-text {
+        color: var(--clr-black);
+        text-align: center;
+        font: var(--fw-1) var(--fs-1) "Noto Sans JP", sans-serif;
+        position: absolute;
+        top: 210px;
+        width: 320px;
+    }
+}

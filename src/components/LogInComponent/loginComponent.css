@@ -1,0 +1,83 @@
+.background-login {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url(https://res.cloudinary.com/du94mex28/image/upload/v1696248746/bgs/mk3rnz9busmj8iwsi29h.jpg) center center;
+}
+.input-form {
+    width: 20%;
+    padding: 10px;
+    margin: 320px 0;
+    border: 1px solid var(--clr-white);
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: var(--primary-yellow);
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: border 0.3s;
+    position: relative;
+}
+.input-form::placeholder {
+    transition: color 0.3s;
+}
+.input-form:focus {
+    outline: none;
+    border: 1px solid var(--primary-yellow);
+    box-shadow: none;
+    transition: border 0.3s;
+}
+.input-form:focus::placeholder {
+    color: var(--primary-yellow);
+    opacity: 0.5;
+    transition: color 0.3s;
+}
+.rectangle-login {
+    background: var(--clr-black);
+    width: 175px;
+    height: 33px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    transition: background 0.2s;
+}
+.login-form {
+    width: 175px;
+    position: absolute;
+    cursor: pointer;
+    top: 420px;
+}
+.login-form2 {
+    color: var(--primary-yellow);
+    text-align: center;
+    font-weight: var(--fw-1);
+    font-size: var(--fs-2);
+    position: absolute;
+    left: 30px;
+    top: 0px;
+    width: 115px;
+    height: 33px;
+    transition: color 0.2s;
+}
+.login-form:hover .rectangle-login {
+    background: var(--primary-yellow);
+    transition: background 0.2s;
+}
+.login-form:hover .login-form2 {
+    color: var(--clr-black);
+    transition: color 0.2s;
+}
+.form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.error {
+    color: red;
+    position: relative;
+    margin-top: -300px;
+}
+
+@media screen and (max-width: 500px) {
+    .input-form {
+        width: 50%;
+    }
+}

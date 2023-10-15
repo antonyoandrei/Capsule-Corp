@@ -1,0 +1,7 @@
+/* BACKGROUND */
+.bg-comics {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: url(https://res.cloudinary.com/du94mex28/image/upload/v1695898505/bgs/bg-custom_jzds5v.jpg) center center;
+}
