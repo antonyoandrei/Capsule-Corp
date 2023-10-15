@@ -17,6 +17,15 @@
     color: var(--primary-yellow);
     font-size: var(--fs-5);
   }
+  .checkout-thx-text {
+    display: flex;
+    justify-content: center;
+    top: 15rem;
+    left: 2rem;
+    position: absolute;
+    color: var(--primary-yellow);
+    font-size: 80px;
+  }
   .checkout-exit {
     position: absolute;
     right: 15px;
@@ -98,8 +107,8 @@
     box-shadow: 9px 10px 46px -8px rgba(0,0,0,0.75);
   }
   .checkout-thx-img {
-    opacity: 0.3;
-    top: 75px;
+    opacity: 0.15;
+    top: 100px;
     right: 25px;
     position: relative;
     width: 850px

@@ -38,7 +38,7 @@ const CheckoutComponent: React.FC<CheckoutProps> = ({ isVisible, onClose, totalP
       setTimeout(() => {
         localStorage.removeItem("cart")
         window.location.href='/';
-      }, 2000);
+      }, 4000);
     } else {
       setFirstNameValid(formData.firstName !== '');
       setLastNameValid(formData.lastName !== '');
@@ -213,7 +213,7 @@ const CheckoutComponent: React.FC<CheckoutProps> = ({ isVisible, onClose, totalP
             </button>
         </div>
         <div className={thxContainerClass}>
-          <p className="checkout-text">Thank you for your order!</p>
+          <p className="checkout-thx-text">Thank you for your order!</p>
           <div className="checkout-thx">
             <img className="checkout-thx-img" src="https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/bgs/wcvfhwcex2royqqpbbfn" alt="Thank You Image" />
           </div>
