@@ -90,6 +90,11 @@ To get started with this project, follow these steps:
 ## Usage
 
 To run the project, use the following commands:
+1. Create a .env file in the root of your project with the following content:
+
+   ```bash
+   VITE_API_BASE_URL_CLOTHES=http://localhost:4000/clothes
+   VITE_API_BASE_URL_ITEMS=http://localhost:4000/items
 1. Run JSON server:
 
    ```bash
