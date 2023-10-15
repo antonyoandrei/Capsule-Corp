@@ -239,9 +239,14 @@
     left: -20px;
   }
   .checkout-thx-img {
-    top: 65px;
+    top: 100px;
     right: 25px;
     width: 375px;
+  }
+  .checkout-thx-text {
+    left: 1px;
+    top: 150px;
+    font-size: 35px;
   }
   .mySwiper {
     top: 45px;
