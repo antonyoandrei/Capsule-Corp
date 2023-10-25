@@ -1,4 +1,4 @@
-<div style="text-align:center;">
+<div align="center">
   <img src="logo-big.png" alt="Capsule Corp Logo" width="350">
 </div>
 
