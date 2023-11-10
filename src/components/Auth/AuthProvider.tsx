@@ -4,11 +4,12 @@ import { types } from "./types/types";
 import { AuthContext } from "./authContext";
 
 const init = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const userJSON = localStorage.getItem('user');
+    const user = userJSON !== null ? JSON.parse(userJSON) : null;
     return {
         isLogged: !!user,
         user
-    }
+    };
 }
 
 interface PrivateRoutesProps {
@@ -18,8 +19,6 @@ interface PrivateRoutesProps {
 const AuthProvider: React.FC<PrivateRoutesProps> = ({ children }) => {
     
     const [authState, dispatch] = useReducer(authReducer, {}, init)
-
-    console.log(authState)
     
     const login = (name = '') => {
         const user = {
@@ -32,7 +31,7 @@ const AuthProvider: React.FC<PrivateRoutesProps> = ({ children }) => {
     
     const logout = () => {
         localStorage.removeItem('user')
-        dispatch({ type: types.logout})
+        dispatch({ type: types.logout, payload: null})
     }
 
     return <AuthContext.Provider value={{ ...authState, login: login, logout: logout}}> {children} </AuthContext.Provider>

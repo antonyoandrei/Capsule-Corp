@@ -7,10 +7,8 @@ import { AuthContext } from "../Auth/authContext";
 const LogInComponent = () => {
   const { register, handleSubmit, formState: { errors, isValid }, getValues} = useForm({mode: "onChange"});
   const onSubmit = (data: any) => console.log(data);
-  console.log(errors);
 
   const { login } = useContext(AuthContext);
-  console.log(login);
 
   const navigate = useNavigate();
 
