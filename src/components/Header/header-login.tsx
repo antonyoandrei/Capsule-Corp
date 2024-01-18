@@ -12,7 +12,6 @@ function HeaderLoginComponent() {
     const onLogout = () => {
         logout();
         localStorage.clear()
-        window.location.reload()
         navigate("/login", {
             replace: true,
         })
