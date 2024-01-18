@@ -2,14 +2,15 @@ import { useContext } from 'react';
 import './header-login.css'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Auth/authContext';
+import WishlistContext from '../WishlistContext/wishlistContext';
 
 function HeaderLoginComponent() {
-    
     const { user, logout } = useContext(AuthContext);
-
+    const { clearWishlist } = useContext(WishlistContext);
     const navigate = useNavigate();
     
     const onLogout = () => {
+        clearWishlist()
         logout();
         localStorage.clear()
         navigate("/login", {

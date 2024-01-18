@@ -69,8 +69,8 @@
 
 @media screen and (max-width: 500px) {
   .capsule-corp-1 {
-    width: 90px;
-    height: 100px;
+    width: 80px;
+    height: 90px;
     left: 35px;
     top: 15px;
   }
@@ -85,6 +85,6 @@
     left: 210px;
     top: 60px;
     color: var(--primary-yellow);
-    font-size: var(--fs-2);
+    font-size: var(--fs-1);
   }
 }

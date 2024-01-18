@@ -8,12 +8,14 @@ interface WishlistContextTypes {
   wishlist: Product[];
   addToWishlist: (product: Product) => void;
   removeFromWishlist: (productId: string) => void;
+  clearWishlist: () => void;
 }
 
 const WishlistContext = createContext<WishlistContextTypes>({
   wishlist: [],
   addToWishlist: () => {},
-  removeFromWishlist: () => {}
+  removeFromWishlist: () => {},
+  clearWishlist: () => {}
 });
 
 export const WishlistProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -34,8 +36,12 @@ export const WishlistProvider: React.FC<{ children: ReactNode }> = ({ children }
     setWishlist(wishlist.filter(product => product.id !== productId));
   };
 
+  const clearWishlist = () => {
+    setWishlist([]);
+  };
+
   return (
-    <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist }}>
+    <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist, clearWishlist }}>
       {children}
     </WishlistContext.Provider>
   );
@@ -44,3 +50,5 @@ export const WishlistProvider: React.FC<{ children: ReactNode }> = ({ children }
 export const useWishlist = () => {
   return useContext(WishlistContext);
 };
+
+export default WishlistContext;

@@ -109,7 +109,7 @@
 
 @media screen and (max-width: 500px) {
   .buy {
-    right: 300px;
+    right: 70%;
     top: 260px;
   }
   .product {
@@ -121,7 +121,7 @@
   }
   .container-big {
     grid-column-gap: 20px;
-    left: 25px;
+    left: 0px;
     top: 55px;
   }
 }
