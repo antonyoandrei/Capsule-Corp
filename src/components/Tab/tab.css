@@ -1,26 +1,134 @@
-/* TAB */
 .tab {
-    flex-shrink: 0;
-    width: 180px;
-    height: 330px;
-    position: relative;
-    background: url(https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/iatsgwlhkksdiwv1pnuv);
-    background-repeat: no-repeat;
-    background-size: contain;
-    transform: scale(1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-    box-shadow: 9px 10px 46px -8px rgba(0,0,0,0);
-  }
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 11.75rem;
+  height: auto;
+  aspect-ratio: 180 / 330;
+  justify-self: center;
+  overflow: hidden;
+  background: url(https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/iatsgwlhkksdiwv1pnuv) center / contain no-repeat;
+  box-shadow: 0 0.55rem 1.2rem rgba(37, 27, 6, 0.1);
+  cursor: pointer;
+  isolation: isolate;
+  transition: box-shadow 0.22s ease-out, transform 0.22s var(--ease-out);
+}
+
+.tab:not(.tab-skeleton):not(.bag-product-image)::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: url(https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/ptqn2sy0qznhbjeorlix) center / contain no-repeat;
+  content: '';
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+.tab > img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tab-meta {
+  position: absolute;
+  right: 7%;
+  bottom: 7.5%;
+  left: 7%;
+  z-index: 2;
+  display: block;
+  min-width: 0;
+  min-height: 4.25rem;
+  padding: 0.58rem 0.62rem 1.35rem 0.68rem;
+  border-left: 0.2rem solid var(--primary-yellow);
+  background: rgba(10, 10, 12, 0.94);
+  box-shadow: 0 0.55rem 1rem rgba(10, 10, 12, 0.18);
+  color: var(--clr-white);
+  pointer-events: none;
+  transition: background-color 0.22s ease-out, box-shadow 0.22s ease-out;
+}
+
+.tab-name {
+  display: block;
+  width: 100%;
+  overflow-wrap: anywhere;
+  font-size: clamp(0.66rem, 1.05vw, 0.76rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.18;
+  text-transform: uppercase;
+  text-wrap: balance;
+  white-space: normal;
+}
+
+.tab-price {
+  position: absolute;
+  right: 0.48rem;
+  bottom: -0.52rem;
+  display: inline-flex;
+  min-height: 1.45rem;
+  align-items: baseline;
+  justify-content: flex-end;
+  padding: 0.29rem 0.55rem 0.31rem 0.9rem;
+  background:
+    radial-gradient(circle at 0.42rem 50%, rgba(10, 10, 12, 0.92) 0 0.085rem, transparent 0.1rem),
+    var(--primary-yellow);
+  clip-path: polygon(0.36rem 0, 100% 0, 100% 100%, 0.36rem 100%, 0 50%);
+  color: var(--clr-black);
+  filter: drop-shadow(0 0.22rem 0.18rem rgba(10, 10, 12, 0.2));
+  font-family: 'Noto Sans JP', sans-serif;
+  font-variant-numeric: tabular-nums;
+  gap: 0.08rem;
+  white-space: nowrap;
+}
+
+.tab-price-amount {
+  font-size: clamp(0.7rem, 1.2vw, 0.82rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.tab-price-currency {
+  font-size: 0.58rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.tab:focus-visible {
+  box-shadow: 0 0.8rem 1.35rem rgba(37, 27, 6, 0.16);
+  transform: translateY(-0.28rem) scale(1.018);
+}
+
+.tab:focus-visible .tab-meta {
+  background: rgba(10, 10, 12, 0.98);
+  box-shadow: 0 0.7rem 1.2rem rgba(10, 10, 12, 0.24);
+}
+
+.tab:not(.bag-product-image):focus-visible::before {
+  opacity: 1;
+}
+
+.tab:active {
+  box-shadow: 0 0.35rem 0.8rem rgba(37, 27, 6, 0.12);
+  transform: translateY(-0.04rem);
+}
+
+@media (hover: hover) and (pointer: fine) {
   .tab:hover {
-      background: url(https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/ptqn2sy0qznhbjeorlix);
-      transform: scale(1.05);
-      transition: transform 0.3s, box-shadow 0.3s;
-      box-shadow: 9px 10px 46px -8px rgba(0,0,0,0.75);
+    box-shadow: 0 0.8rem 1.35rem rgba(37, 27, 6, 0.16);
+    transform: translateY(-0.28rem) scale(1.018);
   }
 
-@media screen and (max-width: 500px) {
-    .tab:hover {
-        transform: none;
-    }
+  .tab:hover .tab-meta {
+    background: rgba(10, 10, 12, 0.98);
+    box-shadow: 0 0.7rem 1.2rem rgba(10, 10, 12, 0.24);
+  }
+
+  .tab:not(.bag-product-image):hover::before {
+    opacity: 1;
+  }
 }

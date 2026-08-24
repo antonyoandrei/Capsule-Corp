@@ -2,7 +2,7 @@ import './background.css';
 
 const BackgroundComponent = () => {
   return (
-    <div className="bg-comics"></div>
+    <div className="bg-comics" aria-hidden="true"></div>
   );
 }
 

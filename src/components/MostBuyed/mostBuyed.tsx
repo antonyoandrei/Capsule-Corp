@@ -1,35 +1,30 @@
-import { useContext } from 'react';
-import FrameComponent from "../Frame/frame";
-import { ClothesContext } from '../Fetch/clothes-fetch';
-import { ItemsContext } from '../Fetch/items-fetch';
-import TabComponent from '../Tab/tab';
-import { clProduct } from '../../types/interface';
-import HeaderLoginComponent from '../Header/header-login';
-import HeaderNavComponent from '../Header/header-nav';
+import { useContext, useMemo } from "react"
+import { ClothesContext } from "../Fetch/clothes-fetch"
+import { ItemsContext } from "../Fetch/items-fetch"
+import CatalogView from "../Catalog/catalogView"
 
 const MostBuyedComponent = () => {
-    const { clothes } = useContext(ClothesContext);
-    const { items } = useContext(ItemsContext);
+  const { clothes, loading: clothesLoading, error: clothesError, refetch: refetchClothes } = useContext(ClothesContext)
+  const { items, loading: itemsLoading, error: itemsError, refetch: refetchItems } = useContext(ItemsContext)
+  const mostBuyed = useMemo(() => [...clothes, ...items].filter(product => product.mostBuyed), [clothes, items])
+  const loading = clothesLoading || itemsLoading
+  const error = clothesError || itemsError
 
-    const allItems = [...clothes, ...items];
-
-    const randomSort = () => Math.random() - 0.5;
-
-    const shuffledItems = allItems.sort(randomSort);
-
-    const mostBuyed = shuffledItems.filter(product => product.mostBuyed === true);
-
-    return (
-        <>
-        <HeaderLoginComponent />
-        <HeaderNavComponent />
-            <FrameComponent>
-              {mostBuyed.map((props: clProduct) => (
-                  <TabComponent key={props.id} {...props} />
-                ))}
-            </FrameComponent>
-        </>
-    );
+  return (
+    <CatalogView
+      kicker="Selection"
+      title="Most wanted"
+      products={mostBuyed}
+      loading={loading}
+      error={error}
+      onRetry={() => {
+        refetchClothes()
+        refetchItems()
+      }}
+      emptyTitle="No featured products"
+      emptyCopy="Nothing has been selected yet."
+    />
+  )
 }
 
-export default MostBuyedComponent;
+export default MostBuyedComponent

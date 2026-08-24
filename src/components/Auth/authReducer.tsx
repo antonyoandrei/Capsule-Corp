@@ -1,22 +1,22 @@
-import { types } from "./types/types";
+import { AuthUser, types } from "./types/types";
 
 interface Action {
-    payload: any;
+    payload?: AuthUser | null;
     type: string;
 }
 
 interface State {
     isLogged: boolean;
-    user: string;
+    user: AuthUser | null;
 }
 
-const authReducer = (state: State, action: Action) => {
+const authReducer = (state: State, action: Action): State => {
     switch(action?.type) {
         case types.login:
             return {
                 ...state,
                 isLogged: true,
-                user: action.payload
+                user: action.payload ?? null
             }
         case types.logout:
             return {

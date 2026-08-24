@@ -1,43 +1,62 @@
-/* PAGE TOP */
 .page-top {
-    animation: pendulum ease-in-out 2s infinite alternate;
-    background-image:url(https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/kbxxxd6cbmvcwxek93tw) ;
-    bottom: 0px;
-    position: fixed;
-    display: block;
-    width: 109px;
-    height: 107px;
-    overflow: hidden;
-    text-indent: 100%;
-    white-space: nowrap;
-    background-size: 109px auto;
-    background-position: center center;
-    background-repeat: no-repeat;
-    transform-origin: bottom;
-    cursor: pointer;
-    right: 20px;
-    bottom: 20px;
-    z-index: 1;
+  position: fixed;
+  right: clamp(0.75rem, 2vw, 1.5rem);
+  bottom: clamp(0.75rem, 2vw, 1.5rem);
+  z-index: 20;
+  display: block;
+  width: clamp(3.75rem, 6vw, 4.75rem);
+  height: clamp(3.75rem, 6vw, 4.75rem);
+  overflow: hidden;
+  border: 0;
+  background: url(https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/kbxxxd6cbmvcwxek93tw) center / contain no-repeat;
+  cursor: pointer;
+  text-indent: 200%;
+  transform-origin: 50% 100%;
+  white-space: nowrap;
+  transition: opacity 0.2s ease, transform 0.22s var(--ease-out), visibility 0.2s ease;
+}
+
+.page-top.hidden {
+  animation: none;
+  transform: translateY(0.8rem) scale(0.9);
+}
+
+.page-top.shown {
+  animation: page-top-pendulum 1.9s ease-in-out infinite alternate;
+  transform: translateY(0) scale(1);
+}
+
+.page-top:active {
+  transform: translateY(0) scale(0.95);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .page-top:hover {
+    transform: translateY(-0.18rem) rotate(-2deg);
   }
-  
-@keyframes pendulum {
-    0% {
-        -webkit-transform: rotate(2deg);
-        transform: rotate(2deg)
-    }
-  
-    100% {
-        -webkit-transform: rotate(-2deg);
-        transform: rotate(-2deg)
-    }
-} 
-  
-@media screen and (max-width: 500px) {
-    .page-top{
-        width: 70px;
-        height: 70px;
-        background-size: 70px auto;
-        left: 10px;
-        bottom: 40px;
-    }
+}
+
+@keyframes page-top-pendulum {
+  from {
+    rotate: 2deg;
+  }
+
+  to {
+    rotate: -2deg;
+  }
+}
+
+@media (max-width: 43.75rem) {
+  .page-top {
+    right: 0.55rem;
+    bottom: calc(5.45rem + env(safe-area-inset-bottom));
+    width: 3.65rem;
+    height: 3.65rem;
+  }
+
+  body:has(.shopping-container) .page-top {
+    bottom: calc(14.4rem + env(safe-area-inset-bottom));
+    width: 3.2rem;
+    height: 3.2rem;
+  }
 }

@@ -28,9 +28,9 @@ const PageTop = () => {
   };
 
   return (
-    <div className={`page-top ${showPageTop ? 'shown' : 'hidden'}`} onClick={scrollToTop}>
+    <button className={`page-top ${showPageTop ? 'shown' : 'hidden'}`} onClick={scrollToTop} type="button" aria-label="Back to page top">
       Page Top
-    </div>
+    </button>
   );
 };
 

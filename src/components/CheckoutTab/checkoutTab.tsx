@@ -1,11 +1,17 @@
-import { clProduct } from '../../types/interface';
-import { FC } from 'react';
+import { CartItem } from '../CartContext/useCart';
 
-const CheckoutTabComponent:FC<clProduct> = ({id, name, img, }) => {
+const CheckoutTabComponent = ({ id, name, img, price, quantity }: CartItem) => {
     return (
-            <div key={id} className="checkout-tab">
-              <img className="product-img" src={img} alt={name} />
-            </div>
+      <article className="checkout-line">
+        <div className="checkout-line-image">
+          <img src={img} alt="" />
+        </div>
+        <div className="checkout-line-copy">
+          <span>REF {String(id).padStart(3, '0')} · QTY {quantity}</span>
+          <strong>{name}</strong>
+        </div>
+        <strong className="checkout-line-price">{new Intl.NumberFormat('en-US').format(price * quantity)}¥</strong>
+      </article>
     );
 }
 

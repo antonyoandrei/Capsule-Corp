@@ -1,0 +1,8 @@
+.fade-image {
+  opacity: 0;
+  transition: opacity 0.16s ease-out;
+}
+
+.fade-image.is-loaded {
+  opacity: 1;
+}

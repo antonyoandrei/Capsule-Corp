@@ -1,0 +1,53 @@
+.home-intro {
+  width: min(calc(100% - 3rem), 75rem);
+  margin: 0 auto;
+  padding: clamp(1.5rem, 3.5vh, 2.5rem) 0 0.25rem;
+  animation: home-intro-enter 0.55s var(--ease-out) both;
+}
+
+.home-intro > p:first-child {
+  margin: 0;
+  color: var(--gold);
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.home-intro h1 {
+  max-width: 14ch;
+  margin: 0.35rem 0 0;
+  font-size: clamp(2.8rem, 8vw, 5.6rem);
+  font-weight: var(--fw-3);
+  line-height: 0.9;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.home-intro-copy {
+  max-width: 38rem;
+  margin: 0.85rem 0 0;
+  color: var(--ink-soft);
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: clamp(0.92rem, 1.4vw, 1.05rem);
+  line-height: 1.65;
+}
+
+@keyframes home-intro-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.8rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 43.75rem) {
+  .home-intro {
+    width: min(calc(100% - 1.5rem), 24rem);
+  }
+}

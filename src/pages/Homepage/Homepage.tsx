@@ -1,15 +1,14 @@
-import HeaderLoginComponent from "../../components/Header/header-login"
-import HeaderNavComponent from "../../components/Header/header-nav"
+import FeaturedRail from "../../components/FeaturedRail/featuredRail"
 import SectionsComponent from "../../components/Sections/sections"
 
 const Homepage = () => {
-    return (
-        <>
-        <HeaderLoginComponent />
-        <HeaderNavComponent />
-        <SectionsComponent />
-        </>
-    )
-} 
+  return (
+    <div className="home-page">
+      <h1 className="sr-only">Capsule Corp collections</h1>
+      <SectionsComponent />
+      <FeaturedRail />
+    </div>
+  )
+}
 
 export default Homepage

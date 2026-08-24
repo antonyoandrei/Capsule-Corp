@@ -1,24 +1,23 @@
 import { useContext } from "react"
 import { ItemsContext } from "../Fetch/items-fetch"
-import FrameComponent from "../Frame/frame"
-import TabComponent from "../Tab/tab"
-import { clProduct } from "../../types/interface"
-import HeaderLoginComponent from "../Header/header-login"
-import HeaderNavComponent from "../Header/header-nav"
+import CatalogView from "../Catalog/catalogView"
 
 const ItemsComponent = () => {
-    const {items} = useContext(ItemsContext)
-    return (
-    <>
-    <HeaderLoginComponent />
-    <HeaderNavComponent />
-    <FrameComponent>
-    {items.map((props: clProduct) => (
-     <TabComponent key={props.id} {...props} />
-    ))}
-    </FrameComponent>
-    </>
-    )
+  const { items, loading, error, refetch } = useContext(ItemsContext)
+
+  return (
+    <CatalogView
+      kicker="Collection"
+      title="Items"
+      products={items}
+      loading={loading}
+      error={error}
+      onRetry={refetch}
+      emptyTitle="No items found"
+      emptyCopy="The archive is empty right now."
+      countLabel="items"
+    />
+  )
 }
 
 export default ItemsComponent

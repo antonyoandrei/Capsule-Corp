@@ -1,84 +1,194 @@
-/* RESET */
-a,
-      button,
-      input,
-      select,
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      * {
-        margin: 0;
-        padding: 0;
-        border: none;
-        text-decoration: none;
-        appearance: none;
-        background: none;
-        font-family: 'Oswald';
-        scroll-behavior: smooth;
-}
 
-
-/* ROOT */
 :root {
-  --primary-yellow: #ffb200;
-  --primary-yellow-dark: #ffb300cc;
-  --clr-black: #000000;
-  --clr-white: #ffffff;
-
+  --primary-yellow: #f2ae1b;
+  --primary-yellow-dark: #c78400;
+  --gold: #89600f;
+  --clr-black: #0a0a0c;
+  --clr-white: #fffefa;
+  --paper: #f6f2e9;
+  --surface: rgba(255, 254, 250, 0.82);
+  --line-soft: rgba(10, 10, 12, 0.14);
+  --clr-error: #d92d20;
+  --ink-soft: #35332f;
   --fs-1: 1rem;
   --fs-2: 1.25rem;
   --fs-3: 1.5rem;
   --fs-4: 1.75rem;
   --fs-5: 2rem;
-
   --fw-1: 400;
   --fw-2: 700;
   --fw-3: 1000;
+  --content-width: 86rem;
+  --home-width: 78rem;
+  --page-gutter: clamp(0.75rem, 3vw, 2rem);
+  --nav-height: 4.6rem;
+  --radius-sm: 0.35rem;
+  --radius-md: 0.75rem;
+  --shadow-soft: 0 1.25rem 3.5rem rgba(37, 27, 6, 0.14);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.2, 0.8, 0.2, 1.08);
+  --z-header: 30;
+  --z-overlay: 50;
+  --z-skip: 80;
 }
 
-
-/* FONTS */
 @font-face {
   font-family: 'Oswald';
-  src: url('../fonts/Oswald.woff2') format('woff2'),
-    url('../fonts/Oswald.woff') format('woff');
+  src: url('../fonts/Oswald.woff2') format('woff2');
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Noto Sans JP';
-  src: url('../fonts/NotoSans.woff2') format('woff2'),
-    url('../fonts/NotoSans.woff2') format('woff');
-  font-display: swap;
+  src: local('Segoe UI Variable Text'), local('Segoe UI'), local('Arial');
+  font-display: optional;
+  font-style: normal;
+  font-weight: 100 900;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-/* SCROLLBAR */
+html {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+}
+
+body {
+  min-height: 100dvh;
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--paper);
+  color: var(--clr-black);
+  font-family: 'Oswald', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  position: relative;
+  min-height: 100dvh;
+  isolation: isolate;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  margin: 0;
+}
+
+button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+button:not(:disabled),
+a[href] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:focus-visible {
+  outline: 0.18rem solid var(--primary-yellow);
+  outline-offset: 0.22rem;
+}
+
+::selection {
+  background: var(--primary-yellow);
+  color: var(--clr-black);
+}
+
 ::-webkit-scrollbar {
-    width: 0.6rem;
-}
-  ::-webkit-scrollbar-track {
-    background: var(--clr-black);
-}
-  ::-webkit-scrollbar-thumb {
-    background: var(--primary-yellow-dark);
-    border-radius: 0.3rem;
-}
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-yellow);
+  width: 0.6rem;
+  height: 0.6rem;
 }
 
+::-webkit-scrollbar-track {
+  background: var(--clr-black);
+}
 
-/* TRANSITION */
+::-webkit-scrollbar-thumb {
+  border-radius: 0.3rem;
+  background: var(--primary-yellow-dark);
+}
+
 .hidden {
   opacity: 0;
   pointer-events: none;
-  transition: opacity ease-in-out 0.4s;
+  transition: opacity 0.35s var(--ease-out), visibility 0.35s var(--ease-out);
+  visibility: hidden;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-yellow);
+  }
 }
 
 .shown {
   opacity: 1;
-  transition: opacity ease-in-out 0.4s;
+  transition: opacity 0.35s var(--ease-out), visibility 0.35s var(--ease-out);
+  visibility: visible;
+}
+
+@media (max-width: 43.75rem) {
+  :root {
+    --nav-height: 4.15rem;
+  }
+}
+
+@keyframes skeleton-pulse {
+  from {
+    opacity: 0.56;
+  }
+
+  to {
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -1,50 +1,87 @@
-import { NavLink, useLocation } from 'react-router-dom';
-import './header-nav.css';
-import { useCart } from '../CartContext/cartContext';
+import { useContext } from "react"
+import { NavLink, useNavigate } from "react-router-dom"
+import { AuthContext } from "../Auth/authContext"
+import { useCart } from "../CartContext/useCart"
+import capsuleCorpLogo from "../../../capsule-corp-seeklogo.svg"
+import "./header-nav.css"
+
+const navigation = [
+  {
+    to: "/homepage",
+    label: "Home",
+    icon: "https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/ji2pobtmdtpqfb3ghijh",
+    activeIcon: "https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/v0udcx32pqdnbzw0jwof",
+  },
+  {
+    to: "/wishlist",
+    label: "Wishlist",
+    icon: "https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/p8qadpxx54bvzfi6yrjk",
+    activeIcon: "https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/wjvozcit5wfkmj2aiykl",
+  },
+  {
+    to: "/about",
+    label: "About",
+    icon: "https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/yqfeaojofaah3ezhuqhu",
+    activeIcon: "https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/j7ogpokdlsrgcdyq9flb",
+  },
+  {
+    to: "/shopping-bag",
+    label: "Shopping bag",
+    icon: "https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/adezj5ftjcjppyez5v1i",
+    activeIcon: "https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/wcojhw921soonkxeqan3",
+  },
+]
 
 function HeaderNavComponent() {
-    const { cart } = useCart()
+  const { cart } = useCart()
+  const { user, logout } = useContext(AuthContext)
+  const navigate = useNavigate()
+  const cartQuantity = cart.reduce((total, item) => total + item.quantity, 0)
 
-    const location = useLocation();
+  const onLogout = () => {
+    logout()
+    navigate("/login", { replace: true })
+  }
 
-    const isActive = (path: string) => {
-        return location.pathname === path;
-    }
+  return (
+    <header className="store-header">
+      <NavLink className="store-header-brand" to="/homepage" aria-label="Capsule Corp home">
+        <img src={capsuleCorpLogo} alt="" />
+      </NavLink>
 
-    return (
-        <section className="header-2">
-            <div className="rectangle-1"></div>
-            <div className="rectangle-4"></div>
-            <img className="bg-effect-1" src="https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/bgs/xnqbsgfkkrxxwwffypkf" alt="Background Effect" />
-            <section className="header-box">
-                <NavLink to={'/'} className='header-link'>
-                    <div className='header-section'>
-                        <img className="header-icon" src={isActive('/homepage') ? 'https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/v0udcx32pqdnbzw0jwof' : 'https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/ji2pobtmdtpqfb3ghijh'} alt="Home Icon" />
-                        <b className={`header-text ${isActive('/homepage') ? 'active' : ''}`}>HOME</b>
-                    </div>
-                </NavLink>
-                <NavLink to={'/wishlist'} className='header-link'>
-                    <div className='header-section'>
-                        <img className="header-icon" src={isActive('/wishlist') ? 'https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/wjvozcit5wfkmj2aiykl' : 'https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/p8qadpxx54bvzfi6yrjk'} alt="Wishlist Icon" />
-                        <b className={`header-text ${isActive('/wishlist') ? 'active' : ''}`}>WISHLIST</b>
-                    </div>
-                </NavLink>
-                <NavLink to={'/about'} className='header-link'>
-                    <div className='header-section'>
-                        <img className="header-icon" src={isActive('/about') ? 'https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/j7ogpokdlsrgcdyq9flb' : 'https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/yqfeaojofaah3ezhuqhu'} alt="About Icon" />
-                        <b className={`header-text ${isActive('/about') ? 'active' : ''}`}>ABOUT</b>
-                    </div>
-                </NavLink>
-                <NavLink to={'/shopping-bag'} className='header-link'>
-                    <div className='header-section'>
-                        <div className="item-quantity">{cart.length}</div>
-                        <img className="header-icon" src={isActive('/shopping-bag') ? 'https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/wcojhw921soonkxeqan3' : 'https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/adezj5ftjcjppyez5v1i'} alt="Shopping Bag Icon" />
-                        <b className={`header-text ${isActive('/shopping-bag') ? 'active' : ''}`}>SHOPPING BAG</b>
-                    </div>
-                </NavLink>
-            </section>
-        </section>
-    );
+      <nav className="header-2" aria-label="Main navigation">
+        <div className="header-box">
+          {navigation.map(item => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              aria-label={item.label}
+              data-nav={item.to.slice(1)}
+              className={({ isActive }) => `header-link${isActive ? " is-active" : ""}`}
+            >
+              <span className="header-section">
+                {item.to === "/shopping-bag" && cartQuantity > 0 ? (
+                  <span className="item-quantity" aria-label={`${cartQuantity} ${cartQuantity === 1 ? "product" : "products"} in shopping bag`}>{cartQuantity}</span>
+                ) : null}
+                <span className="header-icon-stack" aria-hidden="true">
+                  <img className="header-icon header-icon-default" src={item.icon} alt="" />
+                  <img className="header-icon header-icon-active" src={item.activeIcon} alt="" />
+                </span>
+                <span className="header-text">{item.label}</span>
+              </span>
+            </NavLink>
+          ))}
+        </div>
+      </nav>
+
+      <div className="header-account">
+        <span className="header-user" title={user?.name}>{user?.name}</span>
+        <button className="header-logout" onClick={onLogout} type="button" aria-label="Log out">
+          <span className="header-logout-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+  )
 }
 
-export default HeaderNavComponent;
+export default HeaderNavComponent

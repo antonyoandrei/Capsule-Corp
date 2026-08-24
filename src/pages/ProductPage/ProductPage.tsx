@@ -1,16 +1,15 @@
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import ProductPageComponent from "../../components/ProductPage/productPage";
-import { FC } from "react";
 
+const ProductPage = () => {
+  const { id } = useParams();
+  const productId = Number(id);
 
-const ProductPage: FC = () => {
-    let { id } = useParams();
+  if (!Number.isInteger(productId) || productId <= 0) {
+    return <Navigate to="/homepage" replace />;
+  }
 
-    if (id) {
-        return <ProductPageComponent id={parseInt(id)} name={""} description={""} price={0} mostBuyed={false} img={""} images={[]} quantity={0} />;
-    } else {
-        return <div>Loading...</div>; 
-    }
+  return <ProductPageComponent id={productId} />;
 };
 
-export default ProductPage
+export default ProductPage;

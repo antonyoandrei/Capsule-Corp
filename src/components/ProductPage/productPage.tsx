@@ -1,113 +1,106 @@
-import './product-page.css'
-import { clProduct } from '../../types/interface';
-import { useContext } from 'react';
-import { ClothesContext } from '../Fetch/clothes-fetch';
-import { ItemsContext } from '../Fetch/items-fetch';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-import { useWishlist } from '../WishlistContext/wishlistContext';
-import HeaderNavComponent from '../Header/header-nav';
-import HeaderLoginComponent from '../Header/header-login';
-import { useCart } from '../CartContext/cartContext';
-import toast, { Toaster } from 'react-hot-toast';
+import { useContext, useMemo } from "react"
+import { useNavigate } from "react-router-dom"
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Navigation } from "swiper/modules"
+import toast from "react-hot-toast"
+import { ClothesContext } from "../Fetch/clothes-fetch"
+import { ItemsContext } from "../Fetch/items-fetch"
+import { useWishlist } from "../WishlistContext/useWishlist"
+import { useCart } from "../CartContext/useCart"
+import DataState from "../ui/DataState/dataState"
+import FadeImage from "../ui/FadeImage/fadeImage"
+import "swiper/css"
+import "swiper/css/navigation"
+import "../ui/Skeleton/skeleton.css"
+import "./product-page.css"
 
-const ProductPageComponent = (props: clProduct) => {
-  interface WishlistContextType {
-    addToWishlist: (product: clProduct) => void;
-    removeFromWishlist: (productId: number) => void;
-    wishlist: clProduct[];
-  }
+const priceFormatter = new Intl.NumberFormat("en-US")
 
-  interface CartContextType {
-    addToCart: (product: clProduct) => void;
-    removeFromCart: (productId: number) => void;
-    cart: clProduct[];
-  }
-
-  const { clothes } = useContext(ClothesContext);
-  const { items } = useContext(ItemsContext);
-  const { addToWishlist, removeFromWishlist, wishlist } = useWishlist() as unknown as WishlistContextType;
-  const { addToCart } = useCart() as unknown as CartContextType
-
-  const allItems = [...clothes, ...items];
-
-  const selectedProductId = props.id;
-
-  const selectedProduct = allItems.find((product) => product.id === selectedProductId) as clProduct;
-  
-  const isAlreadyInWishlist = wishlist.some((item: { id: number; }) => item.id === selectedProduct.id);
+const ProductPageComponent = ({ id }: { id: number }) => {
+  const navigate = useNavigate()
+  const { clothes, loading: clothesLoading, error: clothesError } = useContext(ClothesContext)
+  const { items, loading: itemsLoading, error: itemsError } = useContext(ItemsContext)
+  const { addToWishlist, removeFromWishlist, wishlist } = useWishlist()
+  const { addToCart } = useCart()
+  const selectedProduct = useMemo(() => [...clothes, ...items].find(product => product.id === id), [clothes, items, id])
+  const loading = clothesLoading || itemsLoading
+  const error = clothesError || itemsError
+  const isAlreadyInWishlist = selectedProduct ? wishlist.some(item => item.id === selectedProduct.id) : false
 
   const handleAddToWishlist = () => {
-    const isAlreadyInWishlist = wishlist.some((item: { id: number; }) => item.id === selectedProduct.id);
-
+    if (!selectedProduct) return
     if (isAlreadyInWishlist) {
-      removeFromWishlist(selectedProduct.id);
+      removeFromWishlist(selectedProduct.id)
+      toast("Removed from wishlist")
     } else {
-      addToWishlist(selectedProduct);
+      addToWishlist(selectedProduct)
+      toast.success("Saved to wishlist")
     }
-  };
-  
-  const notify = () => toast.success('Product added to cart!');
+  }
 
   const handleAddToCart = () => {
-    addToCart({ ...selectedProduct, quantity: 1 });
-    notify()
+    if (!selectedProduct) return
+    addToCart(selectedProduct)
+    toast.success("Product added to cart")
   }
 
   return (
-    <div>
-      <HeaderLoginComponent />
-      <HeaderNavComponent />
-      <Toaster
-        toastOptions={{
-          success: {
-            iconTheme: {
-              primary: 'var(--primary-yellow)',
-              secondary: 'var(--clr-white)',
-            },
-            style: {
-              background: 'var(--clr-black)',
-              color: 'var(--clr-white)',
-            }
-          },
-          position: 'bottom-right',
-        }}
-      />
-      <button onClick={() => history.back()} className="back"></button>
-      <div className="product-container">
-        <div className="product-card">
-          <Swiper navigation={true} loop={true} modules={[Navigation]} className='productSwiper'>
-            <div className="product">
-              {selectedProduct?.images.map((image: string, id: number) => (
-                <SwiperSlide key={id}>
-                  <img className="product-image" src={image} alt={`product-${id}`} />
-                </SwiperSlide>
-              ))}
-            </div>
-          </Swiper>
-        </div>
-        <div className="product-details">
-          <p className="details-title">{selectedProduct?.name}</p>
-          <p className="details-description">{selectedProduct?.description}</p>
-          <p className="details-price">{selectedProduct?.price}¥</p>
-          <div className="details-btns">
-            <button className="cart-btn" onClick={handleAddToCart}>
-              <div className="cart-rectangle"></div>
-              <div className="cart-btn2">Add to cart</div>
-            </button>
-            <button className="fav-btn" onClick={handleAddToWishlist}>
-              <div className="fav-rectangle">
-                <div className={`${isAlreadyInWishlist ? 'fav-img-added' : 'fav-img'}`}></div>
-              </div>
-            </button>
+    <>
+      <button onClick={() => navigate(-1)} className="back" type="button" aria-label="Go back"></button>
+      {loading && (
+        <div className="product-skeleton" aria-hidden="true">
+          <div className="product-skel-media"></div>
+          <div className="product-skel-copy">
+            <span className="skel-line skel-sm"></span>
+            <span className="skel-line skel-lg"></span>
+            <span className="skel-line skel-md"></span>
+            <span className="skel-line skel-btn"></span>
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
+      )}
+      {!loading && error && (
+        <DataState title="Product unavailable" actionLabel="Back home" to="/homepage" variant="error">{error}</DataState>
+      )}
+      {!loading && !error && !selectedProduct && (
+        <DataState title="Product not found" actionLabel="Back home" to="/homepage" variant="missing">This product does not exist in the archive.</DataState>
+      )}
+      {!loading && !error && selectedProduct && (
+        <section className="product-container">
+          <section className="product-card" aria-label={`${selectedProduct.name} gallery`}>
+            <span className="product-gallery-label">Capsule view / {String(selectedProduct.images.length).padStart(2, "0")}</span>
+            <Swiper navigation loop={selectedProduct.images.length > 1} modules={[Navigation]} className="productSwiper">
+              {selectedProduct.images.map((image, imageIndex) => (
+                <SwiperSlide key={image}>
+                  <FadeImage className="product-image" src={image} alt={`${selectedProduct.name}, view ${imageIndex + 1}`} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </section>
+          <section className="product-details">
+            <span className="product-reference">CAPSULE CORP. / REF {String(selectedProduct.id).padStart(3, "0")}</span>
+            <h1 className="details-title">{selectedProduct.name}</h1>
+            <p className="details-description">{selectedProduct.description}</p>
+            <div className="product-purchase">
+              <p className="details-price" aria-label={`${priceFormatter.format(selectedProduct.price)} yen`}>
+                <span>{priceFormatter.format(selectedProduct.price)}</span><small aria-hidden="true">¥</small>
+              </p>
+              <div className="details-btns">
+                <button className="cart-btn" onClick={handleAddToCart} type="button">
+                  <span className="cart-rectangle"></span>
+                  <span className="cart-btn2">Add to cart</span>
+                </button>
+                <button className={`fav-btn ${isAlreadyInWishlist ? "is-added" : ""}`} onClick={handleAddToWishlist} type="button" aria-label={isAlreadyInWishlist ? "Remove from wishlist" : "Add to wishlist"} aria-pressed={isAlreadyInWishlist}>
+                  <span className="fav-rectangle">
+                    <span className={isAlreadyInWishlist ? "fav-img-added" : "fav-img"}></span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </section>
+        </section>
+      )}
+    </>
+  )
+}
 
-export default ProductPageComponent;
+export default ProductPageComponent

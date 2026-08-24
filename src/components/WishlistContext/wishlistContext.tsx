@@ -1,54 +1,33 @@
-import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from "react";
+import { clProduct } from "../../types/interface";
+import { WishlistContext } from "./useWishlist";
 
-interface Product {
-  id: string;
-}
+const readWishlist = (): clProduct[] => {
+  try {
+    const storedWishlist = localStorage.getItem("wishlist");
+    const parsedWishlist: unknown = storedWishlist ? JSON.parse(storedWishlist) : [];
+    return Array.isArray(parsedWishlist) ? parsedWishlist : [];
+  } catch {
+    return [];
+  }
+};
 
-interface WishlistContextTypes {
-  wishlist: Product[];
-  addToWishlist: (product: Product) => void;
-  removeFromWishlist: (productId: string) => void;
-  clearWishlist: () => void;
-}
-
-const WishlistContext = createContext<WishlistContextTypes>({
-  wishlist: [],
-  addToWishlist: () => {},
-  removeFromWishlist: () => {},
-  clearWishlist: () => {}
-});
-
-export const WishlistProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [wishlist, setWishlist] = useState<Product[]>(() => {
-    const storedWishlist = localStorage.getItem('wishlist');
-    return storedWishlist ? JSON.parse(storedWishlist) : [];
-  });
+export const WishlistProvider = ({ children }: { children: ReactNode }) => {
+  const [wishlist, setWishlist] = useState<clProduct[]>(readWishlist);
 
   useEffect(() => {
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
   }, [wishlist]);
 
-  const addToWishlist = (product: Product) => {
-    setWishlist([...wishlist, product]);
+  const addToWishlist = (product: clProduct) => {
+    setWishlist(current => current.some(item => item.id === product.id) ? current : [...current, product]);
   };
 
-  const removeFromWishlist = (productId: string) => {
-    setWishlist(wishlist.filter(product => product.id !== productId));
+  const removeFromWishlist = (productId: number) => {
+    setWishlist(current => current.filter(product => product.id !== productId));
   };
 
-  const clearWishlist = () => {
-    setWishlist([]);
-  };
+  const clearWishlist = () => setWishlist([]);
 
-  return (
-    <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist, clearWishlist }}>
-      {children}
-    </WishlistContext.Provider>
-  );
+  return <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist, clearWishlist }}>{children}</WishlistContext.Provider>;
 };
-
-export const useWishlist = () => {
-  return useContext(WishlistContext);
-};
-
-export default WishlistContext;

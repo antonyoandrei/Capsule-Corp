@@ -1,8 +1,16 @@
 import { createContext } from "react";
+import { AuthUser } from "./types/types";
 
-export const AuthContext = createContext({
+export interface AuthContextValue {
+    isLogged: boolean;
+    user: AuthUser | null;
+    login: (username: string) => void;
+    logout: () => void;
+}
+
+export const AuthContext = createContext<AuthContextValue>({
     isLogged: false,
-    login: (_username: string) => {}, 
-    user: (_username: string) => {},
-    logout: () => {},
+    user: null,
+    login: () => undefined,
+    logout: () => undefined,
 });

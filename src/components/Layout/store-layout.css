@@ -1,0 +1,49 @@
+.skip-link {
+  position: absolute;
+  top: -4rem;
+  left: 1rem;
+  z-index: var(--z-skip);
+  padding: 0.65rem 1rem;
+  background: var(--clr-black);
+  color: var(--primary-yellow);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+.page-view {
+  position: relative;
+  display: flow-root;
+  min-height: calc(100dvh - var(--nav-height));
+}
+
+.page-view:focus {
+  outline: none;
+}
+
+.route-content {
+  animation: route-content-enter 180ms var(--ease-out);
+}
+
+@keyframes route-content-enter {
+  from {
+    opacity: 0.72;
+    transform: translate3d(0, 0.18rem, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (max-width: 43.75rem) {
+  .page-view {
+    min-height: 100dvh;
+    padding-bottom: calc(5.35rem + env(safe-area-inset-bottom));
+  }
+}

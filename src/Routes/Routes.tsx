@@ -10,28 +10,29 @@ import { FC } from "react"
 import ProductPage from "../pages/ProductPage/ProductPage"
 import LogIn from "../pages/LogIn/LogInPage"
 import PrivateRoutes from "./PrivateRoutes"
+import StoreLayout from "../components/Layout/storeLayout"
+import NotFound from "../pages/NotFound/NotFound"
 
-const RoutesComponent:FC = () => {
-    return (
-        <Routes>
-            <Route path="/login" element={<LogIn />} />
-            <Route path="/*" element= {
-                <PrivateRoutes>
-                    <Routes>
-                    <Route path='/homepage' element={<Homepage />} />
-                    <Route path='/about' element={<About />} />
-                    <Route path='/wishlist' element={<Wishlist />} />
-                    <Route path='/shopping-bag' element={<ShoppingBag />} />
-                    <Route path='/clothes' element={<Clothes />} />
-                    <Route path='/items' element={<Items />} />
-                    <Route path='/most-buyed' element={<MostBuyed />} />
-                    <Route path='/product-page/:id' element={<ProductPage />} />
-                    <Route path="/" element={<Navigate to="/homepage" />} />
-                    </Routes>
-                </PrivateRoutes>
-            } />
-        </Routes>
-    )
+const RoutesComponent: FC = () => {
+  return (
+    <Routes>
+      <Route path="/login" element={<LogIn />} />
+      <Route element={<PrivateRoutes />}>
+        <Route element={<StoreLayout />}>
+          <Route path="/homepage" element={<Homepage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/shopping-bag" element={<ShoppingBag />} />
+          <Route path="/clothes" element={<Clothes />} />
+          <Route path="/items" element={<Items />} />
+          <Route path="/most-buyed" element={<MostBuyed />} />
+          <Route path="/product-page/:id" element={<ProductPage />} />
+          <Route path="/" element={<Navigate to="/homepage" replace />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Route>
+    </Routes>
+  )
 }
-  
-export default RoutesComponent;
+
+export default RoutesComponent

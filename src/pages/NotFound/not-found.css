@@ -1,0 +1,199 @@
+.not-found {
+  display: grid;
+  width: min(calc(100% - (var(--page-gutter) * 2)), 72rem);
+  min-height: calc(100dvh - var(--nav-height));
+  place-items: center;
+  margin: 0 auto;
+  padding: clamp(2rem, 6vw, 5rem) 0;
+}
+
+.not-found-panel {
+  position: relative;
+  width: min(100%, 52rem);
+  overflow: hidden;
+  padding: clamp(1.5rem, 5vw, 3.75rem);
+  border: 0.0625rem solid rgba(242, 174, 27, 0.5);
+  border-top: 0.3rem solid var(--primary-yellow);
+  background: var(--clr-black);
+  box-shadow: 0.7rem 0.7rem 0 var(--primary-yellow);
+  color: var(--clr-white);
+}
+
+.not-found-panel::after {
+  position: absolute;
+  right: -5rem;
+  bottom: -6rem;
+  width: 16rem;
+  height: 16rem;
+  border: 0.0625rem solid rgba(242, 174, 27, 0.14);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 2.7rem rgba(242, 174, 27, 0.045),
+    0 0 0 5.4rem rgba(242, 174, 27, 0.025);
+  content: '';
+  pointer-events: none;
+}
+
+.not-found-kicker,
+.not-found-coordinate {
+  display: block;
+  color: var(--primary-yellow);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.not-found-code {
+  display: flex;
+  align-items: center;
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+  font-size: clamp(7rem, 22vw, 13rem);
+  font-weight: 1000;
+  letter-spacing: -0.07em;
+  line-height: 0.75;
+}
+
+.not-found-code > span:not(.not-found-ball) {
+  transform: scaleX(0.9);
+}
+
+.not-found-ball {
+  position: relative;
+  display: grid;
+  width: clamp(5.3rem, 15vw, 8.7rem);
+  height: clamp(5.3rem, 15vw, 8.7rem);
+  flex: 0 0 auto;
+  place-items: center;
+  border: clamp(0.14rem, 0.3vw, 0.22rem) solid #9f4700;
+  border-radius: 50%;
+  margin: 0 0.08em;
+  background: radial-gradient(circle at 34% 27%, #ffe081 0 9%, #ffb21c 28%, #ef7d00 67%, #b94200 100%);
+  box-shadow: 0.05em 0.06em 0 rgba(0, 0, 0, 0.34);
+  letter-spacing: 0;
+}
+
+.not-found-ball > span {
+  display: grid;
+  width: 44%;
+  height: 44%;
+  place-items: center;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.not-found-ball i {
+  color: #c82416;
+  font-family: Arial, sans-serif;
+  font-size: clamp(0.9rem, 2.5vw, 1.45rem);
+  font-style: normal;
+  line-height: 1;
+  text-shadow: 0 0.05rem 0 #8b160e;
+}
+
+.not-found h1 {
+  margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+  font-size: clamp(2.3rem, 7vw, 4.8rem);
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.not-found-copy {
+  max-width: 41ch;
+  margin: 0.85rem 0 0;
+  color: rgba(255, 254, 250, 0.66);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: clamp(0.82rem, 1.7vw, 0.95rem);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.not-found-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+  gap: 1rem;
+}
+
+.not-found-home {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  padding: 0.6rem 0.9rem 0.6rem 1.1rem;
+  background: var(--primary-yellow);
+  color: var(--clr-black);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  gap: 0.8rem;
+  text-transform: uppercase;
+  transition: background-color 0.16s ease-out, transform 0.18s var(--ease-out);
+}
+
+.not-found-home:focus-visible {
+  background: var(--clr-white);
+}
+
+.not-found-home:active {
+  transform: scale(0.97);
+}
+
+.not-found-home span {
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.not-found-back {
+  padding: 0.45rem 0;
+  border-bottom: 0.0625rem solid currentColor;
+  color: rgba(255, 254, 250, 0.72);
+  cursor: pointer;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.16s ease-out, transform 0.18s var(--ease-out);
+}
+
+.not-found-back:focus-visible {
+  color: var(--primary-yellow);
+}
+
+.not-found-back:active {
+  color: var(--primary-yellow);
+  transform: translateX(-0.12rem);
+}
+
+.not-found-coordinate {
+  position: absolute;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: 1rem;
+  color: rgba(255, 254, 250, 0.24);
+  font-size: 0.52rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .not-found-home:hover {
+    background: var(--clr-white);
+  }
+
+  .not-found-back:hover {
+    color: var(--primary-yellow);
+  }
+}
+
+@media (max-width: 34rem) {
+  .not-found-panel {
+    box-shadow: 0.35rem 0.35rem 0 var(--primary-yellow);
+  }
+
+  .not-found-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .not-found-coordinate {
+    display: none;
+  }
+}

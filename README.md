@@ -1,120 +1,147 @@
 <div align="center">
-  <img src="logo-big.png" alt="Capsule Corp Logo" width="350">
+  <img src="logo-big.png" alt="Capsule Corp" width="190">
+  <h1>Capsule Corp Store</h1>
+  <p>Catálogo responsive inspirado en el universo Dragon Ball, construido con React, TypeScript y Vite.</p>
 </div>
 
-Welcome to the Capsule Corp project! This e-commerce website is based on the iconic Capsule Corp from the Dragon Ball series. It features a variety of products from the show, allowing you to shop for your favorite items from the Dragon Ball universe. This project is built using React, Vite, TypeScript, and incorporates various essential features and technologies.
+## Demo
 
-## Table of Contents
+El acceso es una experiencia demo: introduce cualquier nombre de al menos dos caracteres. No se solicita contraseña ni se envían datos de autenticación a la API.
 
-- [Features](#features)
-- [Technologies](#technologies)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
+El recorrido principal incluye:
 
-## Features
+- catálogo de ropa y objetos;
+- selección de productos más buscados;
+- ficha de producto con galería;
+- wishlist y carrito persistentes;
+- checkout responsive con validación;
+- estados de carga, error y contenido vacío.
 
-This e-commerce project includes the following key features:
+## Screenshots
 
-1. **Product Listings**: Browse and explore a wide range of products from the Dragon Ball series.
+### Home · desktop
 
-2. **Add to Cart**: Add your favorite products to your shopping cart.
+![Capsule Corp home desktop](docs/screenshots/home-desktop.png)
 
-3. **Wishlist**: Save products to your wishlist for future reference.
+### Home · mobile
 
-4. **Admin Login**: Secure admin login functionality for managing the products and orders.
+<img src="docs/screenshots/home-mobile.png" alt="Capsule Corp home mobile" width="390">
 
-5. **Private Routes**: Ensure that certain routes are only accessible by authenticated users (admin).
+### Catálogo · hover desktop
 
-6. **.env**: Use environment variables to handle sensitive data or configuration settings securely.
+![Capsule Corp catalog hover](docs/screenshots/catalog-hover-desktop.png)
 
-7. **Custom Hooks**: Implement custom hooks to manage different aspects of the application.
+### Login
 
-8. **React Router**: Utilize React Router for navigation and dynamic routing.
+![Capsule Corp login](docs/screenshots/login-desktop.png)
 
-9. **Context API**: Manage state and share data between components using React Context.
+## Stack
 
-10. **Forms**: Use input forms for product searches, login, and user interactions.
+- React 18.3
+- TypeScript 5.9
+- Vite 6.4
+- React Router 7.18
+- React Hook Form 7.86
+- Swiper 12.2
+- React Hot Toast 2.6
+- CSS responsive sin framework visual
 
-11. **Async/Await**: Implement asynchronous operations for fetching and handling data.
+## Requisitos
 
-12. **React Hook Form**: Employ the React Hook Form library for form handling and validation.
+- Node.js 22 o superior
+- pnpm 10 o superior
+- API de Capsule Corp disponible en local o desplegada
 
-13. **Swiper.js**: Utilize Swiper.js to create responsive and interactive product carousels.
+## Ejecución local
 
-14. **React Hot Toaster**: Display informative and user-friendly toasts for various actions.
+La API y el frontend viven en repositorios separados. Con ambos directorios al mismo nivel:
 
-15. **Custom CSS**: Customize the styling of the application with your own CSS.
+```text
+Capsule-Corp/
+Capsule-Corp-Api/
+```
 
-## Technologies
+Inicia primero la API:
 
-The project is built using the following technologies and libraries:
+```bash
+cd ../Capsule-Corp-Api
+npm install
+npm start
+```
 
-- **React**: A JavaScript library for building user interfaces.
+La API quedará disponible en `http://localhost:3000`.
 
-- **Vite**: A fast, opinionated web development build tool for React and other front-end technologies.
+Después inicia el frontend:
 
-- **TypeScript**: A typed superset of JavaScript that enhances code quality and developer productivity.
+```bash
+cd ../Capsule-Corp
+pnpm install
+pnpm dev
+```
 
-- **React Router**: For creating dynamic and private routes within the application.
+Vite abrirá la aplicación en `http://localhost:5173` o en el siguiente puerto libre.
 
-- **JSON Server**: To simulate a backend server for managing product and order data.
+## Variables de entorno
 
-- **Swiper.js**: A modern and responsive touch slider library for interactive product carousels.
+Copia `.env.example` como `.env`:
 
-- **React Hook Form**: A library for managing forms in React applications.
+```env
+VITE_API_BASE_URL=http://localhost:3000
+```
 
-- **React Hot Toaster**: A library for displaying toast notifications.
+También se mantienen los endpoints específicos por compatibilidad:
 
-- **React-Router-Dom**: For routing in React applications.
+```env
+VITE_API_BASE_URL_CLOTHES=http://localhost:3000/clothes
+VITE_API_BASE_URL_ITEMS=http://localhost:3000/items
+```
 
-## Installation
+`VITE_API_BASE_URL` es la opción recomendada. En producción debe apuntar al dominio desplegado de `Capsule-Corp-Api`.
 
-To get started with this project, follow these steps:
+## API
 
-1. Clone the repository:
+| Método | Endpoint | Descripción |
+| --- | --- | --- |
+| GET | `/health` | Estado y número total de productos |
+| GET | `/clothes` | Colección de ropa |
+| GET | `/items` | Colección de objetos |
+| GET | `/clothes/:id` | Prenda por ID |
+| GET | `/items/:id` | Objeto por ID |
+| GET | `/api/clothes` | Alias preparado para despliegue |
+| GET | `/api/items` | Alias preparado para despliegue |
 
-   ```bash
-   git clone https://github.com/antonyoandrei/capsule-corp.git
-1. Change directory to the project folder:
+Las colecciones aceptan `q`, `_page` y `_limit`.
 
-   ```bash
-   cd capsule-corp
-1. Install dependencies:
+## Calidad
 
-   ```bash
-   pnpm install
+```bash
+pnpm run lint
+pnpm run build
+pnpm run preview
+```
 
-## Usage
+La API se valida con:
 
-To run the project, use the following commands:
-1. Create a .env file in the root of your project with the following content:
+```bash
+npm run check
+npm audit
+```
 
-   ```bash
-   VITE_API_BASE_URL_CLOTHES=http://localhost:4000/clothes
-   VITE_API_BASE_URL_ITEMS=http://localhost:4000/items
-1. Run JSON server:
+## Despliegue en Vercel
 
-   ```bash
-   pnpm run server
-1. Run the development server:
+### API
 
-   ```bash
-   pnpm run dev
+1. Crea un proyecto de Vercel con `Capsule-Corp-Api` como directorio raíz.
+2. Vercel detectará `api/server.js` y aplicará `vercel.json`.
+3. Comprueba `https://tu-api.vercel.app/health`.
 
-## Project Structure
+### Frontend
 
-The project structure is organized as follows:
+1. Crea otro proyecto con `Capsule-Corp` como directorio raíz.
+2. Configura `VITE_API_BASE_URL=https://tu-api.vercel.app`.
+3. Usa `pnpm run build` y `dist` como directorio de salida.
+4. `vercel.json` mantiene las rutas de React Router al recargar o abrir una URL directa.
 
-- **src**: Contains the source code of the application.
-- **.env**: Includes both APIS fetched through the project.
-- **components**: Reusable React components and their respective css file.
-- **context**: Context providers and consumers.
-- **pages**: React components for different pages and routes.
-- **types**: Global interfaces used along different components.
-- **css**: Global CSS styles.
-- **db.json**: JSON file used as a mock database with JSON Server.
-- **routes** and **private routes**: Files that allows the user to navigate dynamically and privately through the application.
-- **fonts**: Imported fonts.
+## Persistencia
+
+La sesión demo, la wishlist y el carrito se guardan en `localStorage`. La API es pública y de solo lectura; el checkout simula una orden y no procesa pagos ni almacena datos personales.

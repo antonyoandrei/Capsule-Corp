@@ -1,27 +1,20 @@
-import { clProduct } from "../../types/interface";
-import FrameComponent from "../Frame/frame";
-import HeaderLoginComponent from "../Header/header-login";
-import HeaderNavComponent from "../Header/header-nav";
-import TabComponent from "../Tab/tab";
-import { useWishlist } from "../WishlistContext/wishlistContext";
+import CatalogView from "../Catalog/catalogView"
+import { useWishlist } from "../WishlistContext/useWishlist"
 
 const WishlistComponent = () => {
-    interface WishlistContextType {
-        wishlist: clProduct[];
-    }
-  const { wishlist } = useWishlist() as unknown as WishlistContextType;
+  const { wishlist } = useWishlist()
 
   return (
-    <>
-    <HeaderLoginComponent />
-    <HeaderNavComponent />
-    <FrameComponent>
-    {wishlist.map((props: clProduct) => (
-     <TabComponent key={props.id} {...props} />
-    ))}
-    </FrameComponent>
-    </>
-    )
-};
+    <CatalogView
+      kicker="Saved"
+      title="Wishlist"
+      products={wishlist}
+      emptyTitle="Your wishlist is empty"
+      emptyCopy="Save a product from its page and it will appear here."
+      emptyActionLabel="Browse clothes"
+      emptyTo="/clothes"
+    />
+  )
+}
 
-export default WishlistComponent;
+export default WishlistComponent
