@@ -1,0 +1,36 @@
+.catalog-heading--wishlist { --catalog-manga-position: 42% 78%; --shenron-cycle: 8s; --shenron-delay: -4s; }
+.wishlist-atmosphere { position: absolute; inset: 3rem 0 0; background: radial-gradient(ellipse at 55% 65%, #c4dc977a, transparent 70%); animation: shenron-aura var(--shenron-cycle) var(--shenron-delay) ease-in-out infinite; }
+.wishlist-dragon { position: absolute; top: .25rem; right: 12%; width: min(88%, 18rem); animation: shenron-arrive 900ms var(--ease-out) both; }
+.wishlist-art-window .shenron-artwork > img { position: static; width: 100%; max-width: 100%; height: auto; animation: none; }
+
+.wishlist-empty { width: var(--page-width); margin: 0 auto; padding: clamp(3rem, 6vw, 5rem) 0 1rem; text-align: center; }
+.data-state-visual.wishlist-radar {
+  width: clamp(9rem, 14vw, 10.5rem);
+  margin: 0 auto 1.5rem;
+}
+.wishlist-empty h2 { font-family: var(--font-body); font-size: clamp(1rem, 1.7vw, 1.3rem); font-weight: 600; }
+.wishlist-empty p { max-width: 36ch; margin: .65rem auto 0; color: #61685c; font-size: .9rem; line-height: 1.8; }
+.wishlist-actions { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: .5rem 1.25rem; margin-top: 1.5rem; }
+.wishlist-items { display: inline-flex; min-height: 3.25rem; align-items: center; font-size: .82rem; text-decoration: underline; text-underline-offset: .3em; text-decoration-color: #929684; transition: text-decoration-color 180ms ease, color 180ms ease; }
+.wishlist-items:hover { color: var(--gold); text-decoration-color: currentColor; }
+
+@keyframes shenron-arrive {
+  from { opacity: 0; transform: translateX(1rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes shenron-aura {
+  0%, 64%, 88%, 100% { opacity: .2; }
+  72% { opacity: 1; }
+}
+
+@media (max-width: 42rem) {
+  .wishlist-dragon { top: .25rem; right: 0; width: 100%; }
+  .wishlist-atmosphere { inset-block-start: 1.5rem; }
+  .wishlist-empty p { font-size: .85rem; }
+  .wishlist-actions { gap: .25rem 1rem; }
+  .wishlist-actions .store-button, .wishlist-items { font-size: .78rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wishlist-dragon, .wishlist-atmosphere { animation: none; }
+}

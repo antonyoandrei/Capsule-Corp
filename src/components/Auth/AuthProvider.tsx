@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useCallback, useMemo, useReducer } from "react";
 import authReducer from "./authReducer";
 import { AuthUser, types } from "./types/types";
 import { AuthContext } from "./authContext";
@@ -28,23 +28,24 @@ interface PrivateRoutesProps {
 
 const AuthProvider: React.FC<PrivateRoutesProps> = ({ children }) => {
     
-    const [authState, dispatch] = useReducer(authReducer, init())
+    const [authState, dispatch] = useReducer(authReducer, undefined, init)
     
-    const login = (name = '') => {
+    const login = useCallback((name = '') => {
         const user = {
             id: 1,
             name: name.trim(),
         } satisfies AuthUser;
         localStorage.setItem('user', JSON.stringify(user));
         dispatch({ type: types.login, payload: user});
-    }
+    }, [])
     
-    const logout = () => {
+    const logout = useCallback(() => {
         localStorage.removeItem('user');
         dispatch({ type: types.logout, payload: null});
-    }
+    }, [])
 
-    return <AuthContext.Provider value={{ ...authState, login: login, logout: logout}}> {children} </AuthContext.Provider>
+    const value = useMemo(() => ({ ...authState, login, logout }), [authState, login, logout]);
+    return <AuthContext.Provider value={value}> {children} </AuthContext.Provider>
 }
 
 export default AuthProvider

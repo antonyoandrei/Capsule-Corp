@@ -1,0 +1,97 @@
+.store-button {
+  --button-bg: var(--primary-yellow);
+  --button-hover-bg: #ffe576;
+  --button-color: var(--clr-black);
+  --button-icon-bg: var(--clr-black);
+  --button-icon-color: var(--primary-yellow);
+  --button-icon-size: 2.25rem;
+  display: inline-flex;
+  min-width: 0;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: .65rem;
+  padding: .375rem .375rem .375rem 1.2rem;
+  border: 1px solid var(--clr-black);
+  border-radius: 999px;
+  background: var(--button-bg);
+  box-shadow: none;
+  color: var(--button-color);
+  font-family: var(--font-body);
+  font-size: .82rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 280ms var(--ease-out), color 280ms var(--ease-out), box-shadow 240ms ease, transform 220ms var(--ease-out);
+}
+
+.store-button--dark {
+  --button-bg: var(--clr-black);
+  --button-hover-bg: #2c393d;
+  --button-color: var(--clr-white);
+  --button-icon-size: 1.25rem;
+  --button-icon-bg: transparent;
+  --button-icon-color: currentColor;
+  padding-inline: 1.25rem;
+}
+
+.store-button--quiet {
+  --button-bg: transparent;
+  --button-hover-bg: #fffdf315;
+  --button-color: var(--clr-white);
+  --button-icon-bg: #fffdf315;
+  --button-icon-color: var(--clr-white);
+  border-color: #fffdf34d;
+}
+
+.store-button--compact {
+  --button-icon-size: 1rem;
+  min-height: 2.75rem;
+  gap: .45rem;
+  padding: .5rem .55rem;
+  font-size: .75rem;
+}
+
+.store-button--text { justify-content: center; padding-inline: 1.35rem; }
+
+.store-button-icon {
+  display: grid;
+  width: var(--button-icon-size, 2.25rem);
+  height: var(--button-icon-size, 2.25rem);
+  flex: 0 0 var(--button-icon-size, 2.25rem);
+  place-items: center;
+  border-radius: 50%;
+  background: var(--button-icon-bg, var(--clr-black));
+  color: var(--button-icon-color, var(--primary-yellow));
+}
+
+.store-button-icon .store-icon { width: 1.15rem; height: 1.15rem; transition: translate 240ms var(--ease-out); }
+.store-button--compact .store-button-icon .store-icon { width: 1rem; height: 1rem; }
+.store-button-label { display: grid; overflow: hidden; line-height: 1.4; }
+.store-button-label > span { grid-area: 1 / 1; text-align: center; opacity: 1; transform: translateY(0); transition: opacity 280ms var(--ease-out), transform 280ms var(--ease-out); }
+.store-button-label > span:last-child { opacity: 0; transform: translateY(35%); }
+.store-button-icon.store-button-confirmation > * { grid-area: 1 / 1; opacity: 1; transform: scale(1); transition: opacity 280ms var(--ease-out), transform 280ms var(--ease-out); }
+.store-button-confirmation > :last-child { opacity: 0; transform: scale(.85); }
+.store-button[data-added="true"] { --button-bg: var(--primary-yellow); --button-hover-bg: #ffe576; --button-color: var(--clr-black); }
+.store-button[data-added="true"] .store-button-label > span:first-child { opacity: 0; transform: translateY(-35%); }
+.store-button[data-added="true"] .store-button-label > span:last-child { opacity: 1; transform: translateY(0); }
+.store-button[data-added="true"] .store-button-confirmation > :first-child { opacity: 0; transform: scale(.85); }
+.store-button[data-added="true"] .store-button-confirmation > :last-child { opacity: 1; transform: scale(1); }
+.store-button-check { width: 1rem; height: 1rem; background: currentColor; clip-path: polygon(5% 51%, 15% 41%, 39% 65%, 85% 16%, 96% 26%, 40% 86%); }
+
+@media (hover: hover) and (pointer: fine) {
+  .store-button:not(:disabled):hover { background: var(--button-hover-bg); box-shadow: 0 4px 14px #141b1e16; transform: translateY(-1px); }
+  .store-button:not(:disabled):is(:hover, :focus-visible) .store-icon-arrow { translate: var(--button-arrow-shift, 3px) 0; }
+}
+
+.store-button:not(:disabled):active { box-shadow: none; transform: scale(.98); }
+.store-button:disabled { opacity: .55; cursor: default; }
+
+@media (prefers-reduced-motion: reduce) {
+  .store-button, .store-button-icon .store-icon, .store-button-label > span, .store-button-icon.store-button-confirmation > * { transition: none; }
+  .store-button-label > span, .store-button-confirmation > * { transform: none !important; }
+  .store-button:not(:disabled):hover, .store-button:not(:disabled):active { transform: none; }
+  .store-button:not(:disabled):is(:hover, :focus-visible) .store-icon-arrow { translate: none; }
+}

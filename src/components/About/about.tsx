@@ -1,38 +1,35 @@
+import { artwork } from "../../services/artwork"
+import FadeImage from "../ui/FadeImage/fadeImage"
+import { useVisibleMotion } from "../ui/useVisibleMotion"
 import "./about.css"
 
 const AboutComponent = () => {
+  const motionRef = useVisibleMotion<HTMLElement>()
   return (
-    <article className="frame-3">
-      <header className="about-header">
-        <div>
-          <span>West City archive / legacy file 001</span>
-          <h1>About Dragon Ball</h1>
-        </div>
-        <p>A universe that never stopped moving.</p>
-      </header>
-
-      <figure className="about-visual">
-        <img className="bg-main-02-1" src="https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/bgs/zflxcrseaqkou4jkwnwi" alt="Dragon Ball banner: enjoy only the best the Dragon Ball universe has to offer" />
+  <article className="frame-3" aria-labelledby="about-title">
+    <h1 id="about-title">About<br />this project</h1>
+    <figure ref={motionRef} className="about-visual">
+      <span className="about-road" aria-hidden="true" />
+      <span className="about-car-arrival">
         <span className="about-animation-container">
-          <img className="img-main-02-1" src="https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/bgs/gsvy5vmjgtn8vzslzgxp" alt="Dragon Ball characters travelling together" />
+          <FadeImage
+            className="img-main-02-1"
+            src={artwork("dragonBallCast", 717)}
+            alt="Goku, Bulma and their friends travelling together in a Capsule Corp car"
+            width="717"
+            height="801"
+            loading="eager"
+          />
         </span>
-      </figure>
-
-      <section className="about-text" aria-labelledby="about-story-title">
-        <span className="about-text-kicker">1984 — today</span>
-        <h2 id="about-story-title">From manga pages to a worldwide icon.</h2>
-        <div className="about-story">
-          <p>Dragon Ball began serialization in Weekly Shonen Jump in Japan in 1984.</p>
-          <p>It grew into anime, games and merchandise, with new stories still reaching millions of fans around the world.</p>
-        </div>
-        <dl className="about-facts">
-          <div><dt>1984</dt><dd>First serialization</dd></div>
-          <div><dt>Weekly Shonen Jump</dt><dd>Original magazine</dd></div>
-          <div><dt>Worldwide</dt><dd>Anime, games and more</dd></div>
-        </dl>
-      </section>
-    </article>
-  )
+      </span>
+    </figure>
+    <div className="about-story">
+      <p>I’m a Dragon Ball fan, and this is a personal project I built in 2022. I updated it in 2026 to keep it up to date.</p>
+      <p>The project is built with React, Vite and TypeScript. I use Cloudinary to store and optimize the images so they stay lightweight.</p>
+      <p>The original pictures weren’t always great quality. I cut them out by hand and even painted over parts of some images to get a better result. For the 2026 update, GPT helped me refactor the UI and upscale those original images.</p>
+    </div>
+  </article>
+)
 }
 
 export default AboutComponent

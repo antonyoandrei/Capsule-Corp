@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Auth/authContext";
-import capsuleCorpLogo from "../../../capsule-corp-seeklogo.svg";
+import { capsuleCorpLogo } from "../../services/artwork";
 import "./loginComponent.css";
 
 interface LoginFormData {
@@ -32,11 +32,10 @@ const LogInComponent = () => {
     <main className="background-login">
       <section className="login-panel" aria-labelledby="login-title">
         <img className="login-logo" src={capsuleCorpLogo} alt="Capsule Corp" />
-        <p className="login-kicker">CAPSULE CORP. ACCESS</p>
-        <h1 id="login-title">Welcome, explorer</h1>
+        <h1 id="login-title">Capsule Corp</h1>
         <p className="login-copy">Enter your name to open the collection. This is a demo, so no password is required.</p>
         <form className="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-          <label className="login-label" htmlFor="username">Operator name</label>
+          <label className="login-label" htmlFor="username">Your name</label>
           <input
             id="username"
             className="input-form"

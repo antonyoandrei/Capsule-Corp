@@ -5,7 +5,204 @@
 
 .header-1 {
   position: relative;
+  z-index: var(--z-header);
   display: grid;
+  width: 100%;
+  min-height: 4.45rem;
+  align-items: center;
+  background: rgba(9, 9, 13, 0.94);
+  border-bottom: 0.0625rem solid rgba(247, 194, 60, 0.28);
+  padding: 0 var(--page-gutter);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+}
+
+.header-1::before {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: -1;
+  height: 0.28rem;
+  background: linear-gradient(90deg, rgba(247, 194, 60, 0), rgba(247, 194, 60, 0.9), rgba(247, 194, 60, 0));
+  content: '';
+}
+
+.store-brand {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  transition: transform 0.22s var(--ease-out);
+}
+
+.login-brand-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 52% 51%, rgba(247, 194, 60, 0.44), transparent 65%);
+  filter: blur(0.2rem);
+  opacity: 0.65;
+}
+
+.store-brand:hover .login-brand-glow {
+  transform: scale(1.25);
+}
+
+.store-brand:hover .capsule-corp-1 {
+  transform: rotate(-6deg) scale(1.08);
+}
+
+.store-brand:focus-visible .capsule-corp-1 {
+  outline: 2px solid rgba(247, 194, 60, 0.8);
+  outline-offset: 0.2rem;
+}
+
+.capsule-corp-1 {
+  position: relative;
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 0.62rem;
+  object-fit: cover;
+  object-position: center 51%;
+  transition: transform 0.22s var(--ease-out);
+}
+
+.user-text {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-self: start;
+  gap: 0.35rem;
+}
+
+.user-text span {
+  color: var(--gold);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.user-text strong {
+  overflow: hidden;
+  color: var(--clr-white);
+  font-size: 0.84rem;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.log-in {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  min-height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  padding: 0 0.85rem;
+  border: 1px solid rgba(247, 194, 60, 0.45);
+  background: rgba(10, 10, 12, 0.86);
+  color: var(--primary-yellow);
+  cursor: pointer;
+  transition: background-color 0.24s ease, color 0.24s ease, transform 0.24s var(--ease-out);
+}
+
+.log-in span:first-child {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.log-in span:last-child {
+  margin-left: 0.6rem;
+  font-size: 0.8rem;
+  transition: transform 0.24s var(--ease-out);
+}
+
+.log-in:active {
+  transform: translateY(0) scale(0.96);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .store-brand:hover .capsule-corp-1 {
+    transform: rotate(-8deg) scale(1.08);
+  }
+
+  .log-in:hover {
+    border-color: var(--primary-yellow);
+    background: var(--primary-yellow);
+    color: var(--clr-black);
+  }
+
+  .log-in:hover span:last-child {
+    transform: translate(0.12rem, -0.12rem);
+  }
+}
+
+@media (max-width: 43.75rem) {
+  .header-1 {
+    min-height: 4.05rem;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .store-brand {
+    width: 2.4rem;
+    height: 2.4rem;
+    justify-self: start;
+  }
+
+  .capsule-corp-1 {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .login-brand-glow {
+    border-radius: 50%;
+  }
+
+  .user-text {
+    max-width: 9rem;
+    justify-self: stretch;
+    grid-column: 2;
+    margin-top: 0.3rem;
+  }
+
+  .user-text span {
+    display: none;
+  }
+
+  .user-text strong {
+    font-size: 0.71rem;
+    color: var(--primary-yellow);
+  }
+
+  .log-in {
+    min-height: 2rem;
+    padding: 0 0.64rem;
+    grid-column: 3;
+  }
+
+  .log-in span:first-child {
+    font-size: 0.74rem;
+  }
+
+  .log-in span:last-child {
+    margin-left: 0.36rem;
+  }
+}
+
+@media (max-width: 23rem) {
+  .user-text strong {
+    max-width: 6rem;
+  }
+}
   width: 100%;
   min-height: 4.5rem;
   align-items: center;

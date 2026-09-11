@@ -1,0 +1,82 @@
+.catalog-heading {
+  --catalog-manga-position: 18% 14%;
+  position: relative;
+  isolation: isolate;
+  width: var(--page-width);
+  margin: var(--space-4) auto 0;
+}
+
+.catalog-heading::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid #d1c9af;
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(105deg, rgba(255, 252, 243, 0.98) 20%, rgba(255, 252, 243, 0.7) 60%, rgba(255, 212, 59, 0.4)),
+    var(--manga-art) var(--catalog-manga-position) / 68rem auto;
+  content: "";
+}
+
+.catalog-heading--items { --catalog-manga-position: 64% 56%; }
+.catalog-heading--wanted { --catalog-manga-position: 95% 98%; }
+
+.catalog-heading .page-header {
+  z-index: 1;
+  width: 100%;
+  min-height: 14rem;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--space-4);
+  overflow: visible;
+  padding-right: 44%;
+  border: 0;
+  background: transparent;
+}
+
+.catalog-heading .page-header::before { display: none; }
+.catalog-heading .page-header h1 { max-width: 12ch; }
+.catalog-heading .product-count { background: var(--surface); }
+
+.catalog-art-window {
+  position: absolute;
+  inset: -3rem 0 0 46%;
+  overflow: hidden;
+  border-bottom-right-radius: var(--radius-lg);
+  pointer-events: none;
+}
+
+.catalog-art-window img {
+  position: absolute;
+  top: 0;
+  right: 12%;
+  width: min(84%, 20rem);
+  max-width: none;
+  height: auto;
+}
+
+.catalog-heading--clothes .catalog-art-window img { width: min(88%, 22rem); right: 8%; }
+.catalog-heading--items .catalog-art-window img { width: min(74%, 14rem); right: 15%; }
+.catalog-heading--wanted .catalog-art-window img { top: -6rem; right: -5%; width: min(130%, 32rem); }
+
+@media (max-width: 42rem) {
+  .catalog-heading { margin-top: var(--space-2); }
+  .catalog-heading .page-header { min-height: 11rem; padding: var(--space-5); padding-right: 44%; flex-wrap: nowrap; }
+  .catalog-heading .page-header h1 { font-size: clamp(1.95rem, 8.8vw, 2.7rem); line-height: 1.05; overflow-wrap: normal; }
+  .catalog-art-window { inset: -1.5rem 0 0 46%; }
+  .catalog-art-window img,
+  .catalog-heading--clothes .catalog-art-window img,
+  .catalog-heading--items .catalog-art-window img,
+  .catalog-heading--wanted .catalog-art-window img { width: 100%; right: 0; }
+  .catalog-heading--wanted .catalog-art-window img { top: -3.25rem; width: 165%; right: -25%; }
+}
+
+@media (max-width: 23rem) {
+  .catalog-heading .page-header { padding-left: var(--space-4); }
+  .catalog-heading .product-count { gap: var(--space-2); padding-inline: 0.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalog-art-window img { animation: none; }
+}

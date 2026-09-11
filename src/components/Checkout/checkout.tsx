@@ -1,11 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import type { PointerEvent as ReactPointerEvent } from "react"
-import { createPortal } from "react-dom"
+import { createPortal, flushSync, preload } from "react-dom"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import CheckoutTabComponent from "../CheckoutTab/checkoutTab"
 import { useCart } from "../CartContext/useCart"
-import capsuleCorpLogo from "../../../capsule-corp-seeklogo.svg"
+import StoreIcon from "../ui/StoreIcon/storeIcon"
+import FadeImage from "../ui/FadeImage/fadeImage"
+import { artwork, capsuleCorpLogo } from "../../services/artwork"
+import "../ui/StoreButton/store-button.css"
 import "./checkout.css"
 
 interface CheckoutProps {
@@ -22,28 +25,38 @@ interface CheckoutFormData {
   phoneNumber: string
 }
 
+type CheckoutStep = "products" | "details" | "complete"
+
 const SHEET_EXIT_DURATION = 400
+const nimbusJourney = artwork("nimbusJourney", 1998)
+const deliveryArtwork = "https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto,c_limit,w_960/v1/bgs/wcvfhwcex2royqqpbbfn"
 
 const CheckoutComponent = ({ isVisible, onClose, totalPrice }: CheckoutProps) => {
   const navigate = useNavigate()
   const { cart, clearCart } = useCart()
-  const itemCount = cart.reduce((total, item) => total + item.quantity, 0)
-  const [step, setStep] = useState<"products" | "details" | "complete">("products")
+  const [step, setStep] = useState<CheckoutStep>("products")
+  const [isChangingStep, setIsChangingStep] = useState(false)
+  const [hasTravelled, setHasTravelled] = useState(false)
   const [isRendered, setIsRendered] = useState(isVisible)
-  const [animationState, setAnimationState] = useState<"opening" | "open" | "closing">(isVisible ? "open" : "closing")
+  const [animationState, setAnimationState] = useState<"opening" | "open" | "closing">("opening")
   const [sheetMode, setSheetMode] = useState<"compact" | "expanded">("compact")
   const [isDragging, setIsDragging] = useState(false)
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<CheckoutFormData>({ mode: "onBlur" })
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<CheckoutFormData>({ mode: "onBlur" })
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const dragHandleRef = useRef<HTMLButtonElement>(null)
   const triggerRef = useRef<HTMLElement | null>(null)
   const sheetRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const confirmationRef = useRef<HTMLHeadingElement>(null)
+  const stepAnimationRef = useRef<Animation | null>(null)
   const dragStartRef = useRef<number | null>(null)
   const dragDeltaRef = useRef(0)
   const dragMovedRef = useRef(false)
   const finishTimerRef = useRef<number | null>(null)
 
   const closeCheckout = useCallback(() => {
+    // Hold the current frame while the entire sheet closes.
+    stepAnimationRef.current?.pause()
     setAnimationState("closing")
     setIsDragging(false)
     dragStartRef.current = null
@@ -53,18 +66,26 @@ const CheckoutComponent = ({ isVisible, onClose, totalPrice }: CheckoutProps) =>
     onClose()
   }, [onClose])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let transitionTimer: number | undefined
+    let openingFrame: number | undefined
 
     if (isVisible) {
+      stepAnimationRef.current?.cancel()
+      setIsChangingStep(false)
       setIsRendered(true)
       setAnimationState("opening")
-      transitionTimer = window.setTimeout(() => setAnimationState("open"), 20)
+      openingFrame = window.requestAnimationFrame(() => {
+        openingFrame = window.requestAnimationFrame(() => setAnimationState("open"))
+      })
     } else if (isRendered) {
       setAnimationState("closing")
       transitionTimer = window.setTimeout(() => {
+        stepAnimationRef.current?.cancel()
         setIsRendered(false)
         setStep("products")
+        setIsChangingStep(false)
+        setHasTravelled(false)
         setSheetMode("compact")
         reset()
       }, SHEET_EXIT_DURATION)
@@ -72,6 +93,7 @@ const CheckoutComponent = ({ isVisible, onClose, totalPrice }: CheckoutProps) =>
 
     return () => {
       if (transitionTimer !== undefined) window.clearTimeout(transitionTimer)
+      if (openingFrame !== undefined) window.cancelAnimationFrame(openingFrame)
     }
   }, [isRendered, isVisible, reset])
 
@@ -80,7 +102,28 @@ const CheckoutComponent = ({ isVisible, onClose, totalPrice }: CheckoutProps) =>
     triggerRef.current = document.activeElement as HTMLElement | null
     closeButtonRef.current?.focus({ preventScroll: true })
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeCheckout()
+      if (event.key === "Escape") {
+        event.preventDefault()
+        closeCheckout()
+        return
+      }
+      if (event.key !== "Tab" || !sheetRef.current) return
+      const sheet = sheetRef.current
+      const focusable = Array.from(sheet.querySelectorAll<HTMLElement>("button, a[href], input, select, textarea, [tabindex]"))
+        .filter(element => element.tabIndex >= 0 && !element.matches(":disabled") && !element.closest("[inert]") && element.getClientRects().length > 0 && getComputedStyle(element).visibility === "visible")
+      if (focusable.length === 0) {
+        event.preventDefault()
+        sheet.focus({ preventScroll: true })
+        return
+      }
+      const currentIndex = focusable.indexOf(document.activeElement as HTMLElement)
+      const shouldWrap = event.shiftKey
+        ? currentIndex <= 0
+        : currentIndex < 0 || currentIndex === focusable.length - 1
+      if (shouldWrap) {
+        event.preventDefault()
+        focusable[event.shiftKey ? focusable.length - 1 : 0].focus()
+      }
     }
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = "hidden"
@@ -88,13 +131,21 @@ const CheckoutComponent = ({ isVisible, onClose, totalPrice }: CheckoutProps) =>
     return () => {
       document.body.style.overflow = previousOverflow
       window.removeEventListener("keydown", handleKeyDown)
-      triggerRef.current?.focus({ preventScroll: true })
+      const returnFocus = triggerRef.current?.isConnected
+        ? triggerRef.current
+        : document.querySelector<HTMLElement>(".shopping-heading h1") ?? document.querySelector<HTMLElement>("#main-content")
+      returnFocus?.focus({ preventScroll: true })
     }
   }, [closeCheckout, isRendered])
 
   useEffect(() => () => {
     if (finishTimerRef.current !== null) window.clearTimeout(finishTimerRef.current)
+    stepAnimationRef.current?.cancel()
   }, [])
+
+  useEffect(() => {
+    if (step === "complete") confirmationRef.current?.focus({ preventScroll: true })
+  }, [step])
 
   const beginSheetDrag = (event: ReactPointerEvent<HTMLButtonElement>) => {
     if (!window.matchMedia("(max-width: 43.75rem)").matches) return
@@ -164,16 +215,45 @@ const CheckoutComponent = ({ isVisible, onClose, totalPrice }: CheckoutProps) =>
     setSheetMode(current => current === "compact" ? "expanded" : "compact")
   }
 
-  const completeOrder = () => {
-    clearCart()
-    setStep("complete")
+  const changeStep = async (nextStep: CheckoutStep) => {
+    if (stepAnimationRef.current || isChangingStep || !isVisible || nextStep === step) return
+    setIsChangingStep(true)
+    if (nextStep === "details") preload(deliveryArtwork, { as: "image" })
+    const content = nextStep === "complete"
+      ? contentRef.current
+      : contentRef.current?.querySelector<HTMLElement>(".checkout-step")
+    let animation: Animation | undefined
+    try {
+      if (content && typeof content.animate === "function" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const current = getComputedStyle(content)
+        animation = content.animate([
+          { opacity: current.opacity, transform: current.transform },
+          { opacity: 0, transform: "translateY(-6px)" },
+        ], { duration: 160, easing: "ease-in", fill: "forwards" })
+        stepAnimationRef.current = animation
+        await animation.finished
+      }
+      // Commit the replacement while the outgoing content is still hidden.
+      flushSync(() => {
+        if (nextStep === "complete") clearCart()
+        if (nextStep === "details") setHasTravelled(true)
+        setStep(nextStep)
+        setIsChangingStep(false)
+      })
+    } catch {
+      // Closing the sheet cancels the transition and leaves the bag intact.
+    } finally {
+      animation?.cancel()
+      stepAnimationRef.current = null
+      setIsChangingStep(false)
+    }
   }
 
   const finishCheckout = () => {
     closeCheckout()
     finishTimerRef.current = window.setTimeout(() => {
       navigate("/homepage", { replace: true })
-    }, SHEET_EXIT_DURATION - 20)
+    }, SHEET_EXIT_DURATION)
   }
 
   if (!isRendered) return null
@@ -201,6 +281,7 @@ const CheckoutComponent = ({ isVisible, onClose, totalPrice }: CheckoutProps) =>
       <div
         ref={sheetRef}
         className="checkout-container"
+        tabIndex={-1}
         data-sheet={sheetMode}
         data-dragging={isDragging ? "true" : "false"}
       >
@@ -221,24 +302,38 @@ const CheckoutComponent = ({ isVisible, onClose, totalPrice }: CheckoutProps) =>
         <header className="checkout-topbar">
           <div className="checkout-brand">
             <img src={capsuleCorpLogo} alt="" />
-            <span>Capsule checkout terminal</span>
+            <span>Checkout</span>
           </div>
           <button ref={closeButtonRef} className="checkout-exit" onClick={closeCheckout} type="button" aria-label="Close checkout"><span className="checkout-exit-icon" aria-hidden="true"></span></button>
         </header>
 
+        <div className="checkout-content" ref={contentRef} data-step={step} data-travelled={hasTravelled} inert={isChangingStep}>
         {step !== "complete" && (
-          <ol className="checkout-progress">
-            <li className={step === "products" ? "is-active" : "is-done"}>Summary</li>
-            <li className={step === "details" ? "is-active" : ""}>Shipping</li>
-          </ol>
+          <div className="checkout-journey" data-step={step} data-travelled={hasTravelled}>
+            <div className="checkout-journey-flight" aria-hidden="true">
+              <span className="checkout-journey-trail">
+                <img src={nimbusJourney} alt="" width="1998" height="248" decoding="async" />
+              </span>
+              <span className="checkout-journey-trail checkout-journey-trail--return">
+                <img src={nimbusJourney} alt="" width="1998" height="248" decoding="async" />
+              </span>
+              <span className="checkout-journey-position">
+                <span className="checkout-journey-nimbus">
+                  <img src={nimbusJourney} alt="" width="1998" height="248" decoding="async" />
+                </span>
+              </span>
+            </div>
+            <ol className="checkout-progress" aria-label="Checkout steps">
+              <li aria-current={step === "products" ? "step" : undefined}>Summary</li>
+              <li aria-current={step === "details" ? "step" : undefined}>Shipping</li>
+            </ol>
+          </div>
         )}
 
         {step === "products" && (
           <section className="checkout-product-container checkout-step">
             <div className="checkout-heading">
-              <span>STEP 01 / 02</span>
               <h2 id="checkout-title">Order summary</h2>
-              <p>{itemCount} {itemCount === 1 ? "product" : "products"} ready for dispatch.</p>
             </div>
             <div className="checkout-order-list" aria-label="Products in this order">
               {cart.map(product => (
@@ -248,9 +343,8 @@ const CheckoutComponent = ({ isVisible, onClose, totalPrice }: CheckoutProps) =>
             <aside className="checkout-total-panel">
               <span>Order total</span>
               <strong>{new Intl.NumberFormat("en-US").format(totalPrice)}¥</strong>
-              <button type="button" onClick={() => setStep("details")} className="checkout-btn">
-                <span className="rectangle-checkout"></span>
-                <span className="checkout-btn2">Shipping details</span>
+              <button type="button" onClick={() => void changeStep("details")} className="checkout-btn store-button store-button--text">
+                <span>Shipping details</span>
               </button>
             </aside>
           </section>
@@ -259,10 +353,9 @@ const CheckoutComponent = ({ isVisible, onClose, totalPrice }: CheckoutProps) =>
         {step === "details" && (
           <section className="checkout-details-container checkout-step">
             <div className="checkout-heading">
-              <span>STEP 02 / 02</span>
               <h2 id="checkout-title">Shipping details</h2>
             </div>
-            <form className="checkout-form" onSubmit={handleSubmit(completeOrder)} noValidate>
+            <form className="checkout-form" onSubmit={handleSubmit(() => changeStep("complete"))} aria-busy={isSubmitting} inert={isSubmitting} noValidate>
               <div className="checkout-form-grid">
                 <label className="input-container">
                   <span>First name</span>
@@ -291,10 +384,10 @@ const CheckoutComponent = ({ isVisible, onClose, totalPrice }: CheckoutProps) =>
                 </label>
               </div>
               <div className="checkout-actions">
-                <button type="button" className="checkout-back" onClick={() => setStep("products")}>Back</button>
-                <button type="submit" className="order-checkout-btn">
-                  <span className="order-rectangle-checkout"></span>
-                  <span className="order-checkout-btn2">Complete order</span>
+                <button type="button" className="checkout-back store-button store-button--quiet" onClick={() => void changeStep("products")}>Back<span className="store-button-icon"><StoreIcon name="arrow" /></span></button>
+                <button type="submit" className="order-checkout-btn store-button store-button--dark" disabled={isSubmitting}>
+                  <span>{isSubmitting ? "Completing…" : "Complete order"}</span>
+                  <span className="store-button-icon"><StoreIcon name="bag" /></span>
                 </button>
               </div>
             </form>
@@ -303,15 +396,16 @@ const CheckoutComponent = ({ isVisible, onClose, totalPrice }: CheckoutProps) =>
 
         {step === "complete" && (
           <section className="checkout-thx-container checkout-step">
-            <img className="checkout-thx-img" src="https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/bgs/wcvfhwcex2royqqpbbfn" alt="Capsule Corp delivery" />
-            <h2 className="checkout-thx-text" id="checkout-title">Thank you for your order</h2>
+            <FadeImage className="checkout-thx-img" src={deliveryArtwork} alt="" loading="eager" />
+            <span className="checkout-confirmation-mark" aria-hidden="true"><span className="store-button-check" /></span>
+            <h2 ref={confirmationRef} className="checkout-thx-text" id="checkout-title" tabIndex={-1}>Thank you for your order</h2>
             <p>Your bag is cleared and the order is complete.</p>
-            <button className="checkout-btn checkout-finish" type="button" onClick={finishCheckout}>
-              <span className="rectangle-checkout"></span>
-              <span className="checkout-btn2">Continue shopping</span>
+            <button className="checkout-btn checkout-finish store-button store-button--text" type="button" onClick={finishCheckout}>
+              <span>Continue shopping</span>
             </button>
           </section>
         )}
+        </div>
       </div>
     </div>,
     document.body

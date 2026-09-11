@@ -7,4 +7,9 @@ export interface clProduct {
     img: string;
     images: string[];
     quantity: number;
+    style?: {
+        group: string;
+        label: string;
+        color?: string;
+    };
 }

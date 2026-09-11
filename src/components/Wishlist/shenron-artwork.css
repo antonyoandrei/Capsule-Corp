@@ -1,0 +1,13 @@
+.shenron-artwork { position: relative; display: block; width: 100%; aspect-ratio: 1002 / 1638; pointer-events: none; }
+.shenron-artwork > img { display: block; width: 100%; height: auto; }
+.shenron-artwork > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.shenron-eye-flare { opacity: 0; animation: shenron-eye-glimmer var(--shenron-cycle, 8s) var(--shenron-delay, -4s) ease-in-out infinite; }
+
+@keyframes shenron-eye-glimmer {
+  0%, 64%, 82%, 100% { opacity: 0; }
+  72% { opacity: .95; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shenron-eye-flare { animation: none; opacity: 0; }
+}

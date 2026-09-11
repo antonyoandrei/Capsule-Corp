@@ -1,8 +1,13 @@
 .fade-image {
   opacity: 0;
-  transition: opacity 0.16s ease-out;
+  transition: opacity var(--motion-reveal, 220ms) ease-out;
 }
 
-.fade-image.is-loaded {
+.fade-image.is-loaded,
+.fade-image.is-error {
   opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-image { transition: none; }
 }

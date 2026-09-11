@@ -1,10 +1,11 @@
 import FeaturedRail from "../../components/FeaturedRail/featuredRail"
+import HomeIntro from "../../components/HomeIntro/homeIntro"
 import SectionsComponent from "../../components/Sections/sections"
 
 const Homepage = () => {
   return (
     <div className="home-page">
-      <h1 className="sr-only">Capsule Corp collections</h1>
+      <div className="home-masthead"><HomeIntro /></div>
       <SectionsComponent />
       <FeaturedRail />
     </div>

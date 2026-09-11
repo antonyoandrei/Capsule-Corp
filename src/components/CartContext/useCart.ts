@@ -13,12 +13,15 @@ export interface CartContextTypes {
   clearCart: () => void;
 }
 
-export const CartContext = createContext<CartContextTypes>({
-  cart: [],
+const defaultActions: Omit<CartContextTypes, "cart"> = {
   addToCart: () => undefined,
   decrementFromCart: () => undefined,
   removeFromCart: () => undefined,
   clearCart: () => undefined,
-});
+};
+
+export const CartContext = createContext<CartContextTypes>({ cart: [], ...defaultActions });
+export const CartActionsContext = createContext(defaultActions);
 
 export const useCart = () => useContext(CartContext);
+export const useCartActions = () => useContext(CartActionsContext);

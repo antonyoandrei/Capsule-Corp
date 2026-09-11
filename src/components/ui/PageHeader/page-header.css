@@ -1,125 +1,43 @@
 .page-header {
   position: relative;
+  isolation: isolate;
   display: flex;
-  width: min(calc(100% - (var(--page-gutter) * 2)), var(--content-width));
-  align-items: end;
+  width: var(--page-width);
+  min-height: 10rem;
+  align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: var(--space-5);
+  overflow: hidden;
   margin: 0 auto;
-  padding: clamp(1.65rem, 3.2vw, 2.75rem) 0 clamp(0.85rem, 1.8vw, 1.15rem);
-  border-bottom: 0.0625rem solid var(--line-soft);
+  padding: var(--panel-padding);
+  border: 1px solid #d1c9af;
+  border-radius: var(--radius-lg);
+  background: #eee8d6;
+  color: var(--clr-black);
 }
 
-.page-header::after {
+.page-header::before {
   position: absolute;
-  bottom: -0.0625rem;
-  left: 0;
-  width: clamp(3.25rem, 7vw, 6rem);
-  height: 0.22rem;
-  background: var(--primary-yellow);
-  content: '';
+  inset: 0 0 0 auto;
+  z-index: -1;
+  width: min(70%, 40rem);
+  background: var(--manga-art) var(--manga-position, right top) / 40rem auto no-repeat;
+  mix-blend-mode: multiply;
+  mask-image: linear-gradient(90deg, transparent, #000 48%);
+  content: "";
+  pointer-events: none;
 }
 
-.page-kicker {
-  margin: 0;
-  color: var(--gold);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 0.66rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
+.page-view[data-route="/clothes"] .page-header { --manga-position: right top; }
+.page-view[data-route="/items"] .page-header { --manga-position: right 51%; }
+.page-view[data-route="/most-buyed"] .page-header { --manga-position: right bottom; }
+.page-view[data-route="/wishlist"] .page-header { --manga-position: center 53%; }
+.page-header > div { min-width: 0; }
+.page-header h1 { max-width: 15ch; margin: 0; font-size: clamp(3rem, 5.5vw, 4.8rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.05; text-transform: uppercase; overflow-wrap: anywhere; }
+.page-count-skel { flex-shrink: 0; width: 7rem; height: 2.75rem; border-radius: 999px; background: #e3ddcc; animation: skeleton-pulse 1.8s ease-in-out infinite alternate; }
 
-.page-header h1 {
-  margin: 0.3rem 0 0;
-  font-size: clamp(2.5rem, 5.8vw, 4.55rem);
-  font-weight: var(--fw-3);
-  letter-spacing: -0.035em;
-  line-height: 0.9;
-  text-transform: uppercase;
-  text-wrap: balance;
-}
-
-.page-count,
-.page-count-skel {
-  min-width: 7.65rem;
-  min-height: 3.1rem;
-  margin: 0 0 0.2rem;
-  padding: 0.36rem 0.55rem 0.36rem 0.38rem;
-  border: 0.0625rem solid var(--line-soft);
-  background: rgba(255, 254, 250, 0.76);
-  box-shadow: 0.28rem 0.28rem 0 rgba(242, 174, 27, 0.56);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-variant-numeric: tabular-nums;
-}
-
-.page-count {
-  display: inline-grid;
-  align-items: center;
-  grid-template-columns: 2.25rem minmax(0, 1fr);
-  gap: 0.58rem;
-}
-
-.page-count strong {
-  display: grid;
-  height: 2.25rem;
-  place-items: center;
-  background: var(--clr-black);
-  color: var(--primary-yellow);
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.page-count span {
-  color: var(--gold);
-  font-size: 0.64rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  line-height: 1.25;
-  text-transform: uppercase;
-}
-
-.page-count-skel {
-  display: flex;
-  align-items: center;
-  gap: 0.58rem;
-  animation: skeleton-pulse 0.9s ease-in-out infinite alternate;
-}
-
-.page-count-skel::before,
-.page-count-skel::after {
-  display: block;
-  background: rgba(10, 10, 12, 0.12);
-  content: '';
-}
-
-.page-count-skel::before {
-  width: 2.25rem;
-  height: 2.25rem;
-  flex: 0 0 2.25rem;
-  background: rgba(10, 10, 12, 0.78);
-}
-
-.page-count-skel::after {
-  width: 3.4rem;
-  height: 0.62rem;
-}
-
-@media (max-width: 37.5rem) {
-  .page-header {
-    width: min(calc(100% - 1rem), 35rem);
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-
-  .page-count {
-    margin-bottom: 0;
-  }
-
-  .page-count-skel {
-    margin-bottom: 0;
-  }
+@media (max-width: 42rem) {
+  .page-header { min-height: 9rem; flex-wrap: wrap; gap: var(--space-4); }
+  .page-header::before { width: 85%; opacity: 0.8; }
+  .page-header h1 { font-size: clamp(2.5rem, 10vw, 3.5rem); }
 }

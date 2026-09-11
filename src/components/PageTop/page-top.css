@@ -1,62 +1,40 @@
 .page-top {
+  --ship-size: clamp(4rem, 6vw, 4.75rem);
   position: fixed;
-  right: clamp(0.75rem, 2vw, 1.5rem);
-  bottom: clamp(0.75rem, 2vw, 1.5rem);
+  right: 1rem;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom));
   z-index: 20;
   display: block;
-  width: clamp(3.75rem, 6vw, 4.75rem);
-  height: clamp(3.75rem, 6vw, 4.75rem);
+  width: var(--ship-size);
+  height: var(--ship-size);
   overflow: hidden;
   border: 0;
-  background: url(https://res.cloudinary.com/du94mex28/image/upload/f_auto,q_auto/v1/icons/kbxxxd6cbmvcwxek93tw) center / contain no-repeat;
+  border-radius: 0.5rem;
+  background: var(--pagetop-art) center / contain no-repeat;
   cursor: pointer;
-  text-indent: 200%;
   transform-origin: 50% 100%;
-  white-space: nowrap;
-  transition: opacity 0.2s ease, transform 0.22s var(--ease-out), visibility 0.2s ease;
+  transition: opacity var(--motion-fast), transform var(--motion-smooth) var(--ease-out), visibility var(--motion-fast);
 }
 
-.page-top.hidden {
-  animation: none;
-  transform: translateY(0.8rem) scale(0.9);
-}
-
-.page-top.shown {
-  animation: page-top-pendulum 1.9s ease-in-out infinite alternate;
-  transform: translateY(0) scale(1);
-}
-
-.page-top:active {
-  transform: translateY(0) scale(0.95);
-}
+.page-top.hidden { animation: none; transform: translateY(0.35rem) scale(0.94); }
+.page-top.shown { animation: page-top-pendulum 1.9s ease-in-out infinite alternate; }
+.page-top:active { transform: translateY(1px) scale(0.95); }
 
 @media (hover: hover) and (pointer: fine) {
-  .page-top:hover {
-    transform: translateY(-0.18rem) rotate(-2deg);
-  }
+  .page-top:hover { transform: translateY(-0.25rem) rotate(-2deg); }
 }
+
+@media (max-width: 37.5rem) {
+  .page-top { --ship-size: 3.65rem; }
+}
+
+body:has(.checkout-card) .page-top { opacity: 0; visibility: hidden; pointer-events: none; }
 
 @keyframes page-top-pendulum {
-  from {
-    rotate: 2deg;
-  }
-
-  to {
-    rotate: -2deg;
-  }
+  from { rotate: 2deg; }
+  to { rotate: -2deg; }
 }
 
-@media (max-width: 43.75rem) {
-  .page-top {
-    right: 0.55rem;
-    bottom: calc(5.45rem + env(safe-area-inset-bottom));
-    width: 3.65rem;
-    height: 3.65rem;
-  }
-
-  body:has(.shopping-container) .page-top {
-    bottom: calc(14.4rem + env(safe-area-inset-bottom));
-    width: 3.2rem;
-    height: 3.2rem;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .page-top, .page-top.shown, .page-top.hidden { animation: none !important; transition: none; transform: none; rotate: 0deg; }
 }

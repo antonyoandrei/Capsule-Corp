@@ -1,6 +1,6 @@
 import { useContext, useMemo } from "react"
-import { ClothesContext } from "../Fetch/clothes-fetch"
-import { ItemsContext } from "../Fetch/items-fetch"
+import { ClothesContext } from "../Fetch/clothes-context"
+import { ItemsContext } from "../Fetch/items-context"
 import CatalogView from "../Catalog/catalogView"
 
 const MostBuyedComponent = () => {
@@ -12,7 +12,6 @@ const MostBuyedComponent = () => {
 
   return (
     <CatalogView
-      kicker="Selection"
       title="Most wanted"
       products={mostBuyed}
       loading={loading}

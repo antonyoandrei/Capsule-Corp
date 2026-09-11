@@ -1,265 +1,160 @@
 .frame-3 {
-  width: min(calc(100% - (var(--page-gutter) * 2)), 75rem);
+  position: relative;
+  display: grid;
+  width: var(--page-width);
+  grid-template:
+    "title art" auto
+    "story art" 1fr / 0.95fr 1.15fr;
+  gap: var(--space-5) var(--section-gap);
   margin: 0 auto;
-  padding: clamp(1.6rem, 3.5vw, 3rem) 0 clamp(3.5rem, 6vw, 5.5rem);
 }
 
-.about-header {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  padding-bottom: 1.1rem;
-  border-bottom: 0.0625rem solid var(--line-soft);
-  gap: 1.5rem;
-}
-
-.about-header span,
-.about-text-kicker {
-  color: var(--gold);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 0.64rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
+.frame-3 > h1 {
+  position: relative;
+  z-index: 1;
+  grid-area: title;
+  align-self: end;
+  font-family: var(--font-display);
+  font-size: clamp(3.25rem, 6.4vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1;
   text-transform: uppercase;
-}
-
-.about-header h1 {
-  margin: 0.35rem 0 0;
-  font-size: clamp(3rem, 8vw, 6.2rem);
-  font-weight: var(--fw-3);
-  letter-spacing: -0.045em;
-  line-height: 0.86;
-  text-transform: uppercase;
-  text-wrap: balance;
-}
-
-.about-header > p {
-  max-width: 22ch;
-  margin: 0 0 0.15rem;
-  color: var(--ink-soft);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 0.82rem;
-  line-height: 1.55;
-  text-align: right;
-  text-wrap: pretty;
 }
 
 .about-visual {
   position: relative;
-  width: 100%;
-  aspect-ratio: 1920 / 920;
-  overflow: hidden;
-  margin: 1.25rem 0 0;
-  border-top: 0.25rem solid var(--primary-yellow);
-  background: var(--clr-white);
-  box-shadow: 0 1.25rem 3rem rgba(37, 27, 6, 0.15);
+  display: grid;
+  grid-area: art;
+  align-items: center;
+  justify-items: center;
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-5) var(--space-3) var(--space-6);
+  isolation: isolate;
 }
 
-.bg-main-02-1 {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.about-visual::before {
+  position: absolute;
+  inset: 6% -2% 5% -12%;
+  z-index: -2;
+  background: var(--manga-art) 78% 86% / 640px auto;
+  opacity: 0.12;
+  mask-image: radial-gradient(ellipse at 54% 50%, #000 15%, transparent 67%);
+  content: "";
+}
+
+.about-visual::after {
+  position: absolute;
+  inset: 14% 1% 13% -9%;
+  z-index: -1;
+  background: repeating-linear-gradient(166deg, transparent 0 34px, rgba(109, 87, 34, 0.28) 35px 36px, transparent 37px 58px);
+  mask-image: radial-gradient(ellipse at 54% 50%, transparent 22%, #000 49%, transparent 71%);
+  content: "";
+}
+
+.about-road {
+  position: absolute;
+  bottom: 8%;
+  left: -10%;
+  z-index: -1;
+  width: 112%;
+  height: 17%;
+  overflow: hidden;
+  border-block: 1px solid rgba(85, 71, 37, 0.25);
+  background: rgba(231, 192, 83, 0.16);
+  transform: rotate(-13deg);
+  mask-image: linear-gradient(90deg, transparent, #000 16% 81%, transparent);
+}
+
+.about-road::after {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 200%;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--gold) 0 3rem, transparent 3rem 6rem);
+  opacity: 0.45;
+  animation: about-road-travel 1.8s linear infinite;
+  content: "";
+}
+
+.about-car-arrival {
+  display: block;
+  width: min(100%, 29rem);
+  animation: about-car-arrive 1.1s var(--ease-out) both;
 }
 
 .about-animation-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 46%;
-  height: 96%;
   display: block;
+  width: 100%;
+  transform-origin: center bottom;
   animation: about-main-bounce-y 3s cubic-bezier(0.4, 0.245, 0.58, 1.42) infinite;
-  transform-origin: left bottom;
-  pointer-events: none;
 }
 
 .img-main-02-1 {
+  display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: contain;
-  object-position: left bottom;
+  transform-origin: center bottom;
   animation: about-main-bounce-x 3s cubic-bezier(0.4, 0.245, 0.58, 1.42) infinite;
-  transform-origin: left bottom;
-  pointer-events: none;
-}
-
-@keyframes about-main-bounce-x {
-  0%,
-  15%,
-  100% {
-    transform: scaleX(1);
-  }
-
-  5% {
-    transform: scaleX(1.05);
-  }
-}
-
-@keyframes about-main-bounce-y {
-  0%,
-  10%,
-  100% {
-    transform: scaleY(1);
-  }
-
-  5% {
-    transform: scaleY(0.95);
-  }
-}
-
-.about-text {
-  position: relative;
-  z-index: 1;
-  width: min(100% - 3rem, 52rem);
-  margin: -3.75rem 2.25rem 0 auto;
-  padding: clamp(1.35rem, 3vw, 2rem);
-  border-left: 0.25rem solid var(--primary-yellow);
-  background: var(--clr-white);
-  box-shadow: 0.55rem 0.55rem 0 rgba(242, 174, 27, 0.72);
-}
-
-.about-text h2 {
-  max-width: 14ch;
-  margin: 0.35rem 0 0;
-  font-size: clamp(2rem, 4.7vw, 3.5rem);
-  letter-spacing: -0.035em;
-  line-height: 0.92;
-  text-transform: uppercase;
-  text-wrap: balance;
 }
 
 .about-story {
-  display: grid;
-  margin-top: 1.2rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem 1.5rem;
-}
-
-.about-story p {
-  margin: 0;
+  position: relative;
+  z-index: 1;
+  grid-area: story;
+  align-self: start;
+  max-width: 43ch;
   color: var(--ink-soft);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: clamp(0.82rem, 1.25vw, 0.94rem);
-  line-height: 1.68;
-  text-wrap: pretty;
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
+  line-height: 1.8;
 }
 
-.about-facts {
-  display: grid;
-  margin: 1.35rem 0 0;
-  padding-top: 1rem;
-  border-top: 0.0625rem solid var(--line-soft);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.about-story p + p { margin-top: var(--space-4); }
+
+@keyframes about-car-arrive {
+  from { opacity: 0; transform: translate(3rem, -1rem) rotate(3deg); }
+  to { opacity: 1; transform: translate(0, 0) rotate(0); }
 }
 
-.about-facts > div {
-  min-width: 0;
-  padding: 0 0.9rem;
-  border-left: 0.0625rem solid var(--line-soft);
+@keyframes about-road-travel {
+  to { transform: translateX(-6rem); }
 }
 
-.about-facts > div:first-child {
-  padding-left: 0;
-  border-left: 0;
+@keyframes about-main-bounce-x {
+  0%, 15%, 100% { transform: scaleX(1); }
+  5% { transform: scaleX(1.05); }
 }
 
-.about-facts dt {
-  overflow-wrap: anywhere;
-  font-size: clamp(1.05rem, 2vw, 1.35rem);
-  font-weight: 700;
-  line-height: 1.05;
-  text-transform: uppercase;
+@keyframes about-main-bounce-y {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  5% { transform: translateY(2px) scaleY(0.95); }
+  10% { transform: translateY(-2px) scaleY(1); }
+  50% { transform: translateY(2px) scaleY(1); }
+  75% { transform: translateY(-1px) scaleY(1); }
 }
 
-.about-facts dd {
-  margin: 0.3rem 0 0;
-  color: var(--gold);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-}
-
-@media (max-width: 46rem) {
-  .about-header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.55rem;
-  }
-
-  .about-header > p {
-    max-width: 32ch;
-    text-align: left;
-  }
-
-  .about-text {
-    width: calc(100% - 1.25rem);
-    margin-top: -2rem;
-    margin-right: 0.25rem;
-  }
-}
-
-@media (max-width: 37.5rem) {
+@media (max-width: 48rem) {
   .frame-3 {
-    width: min(calc(100% - 1rem), 31rem);
-    padding-top: 1.25rem;
+    grid-template: "title" "art" "story" / 1fr;
+    gap: var(--space-5);
   }
 
-  .about-header h1 {
-    font-size: clamp(3rem, 16vw, 4.6rem);
-  }
-
-  .about-visual {
-    margin-top: 0.9rem;
-  }
-
-  .about-animation-container {
-    width: 48%;
-    height: 94%;
-  }
-
-  .about-text {
-    width: 100%;
-    margin: 0.9rem 0 0;
-    padding: 1.25rem 1rem 1.35rem;
-    box-shadow: 0.35rem 0.35rem 0 rgba(242, 174, 27, 0.72);
-  }
-
-  .about-story {
-    grid-template-columns: 1fr;
-    gap: 0.7rem;
-  }
+  .frame-3 > h1 { font-size: clamp(3rem, 11vw, 5rem); }
+  .about-visual { overflow: clip; padding: 0 var(--space-3) var(--space-4); }
+  .about-car-arrival { width: min(100%, 18rem); height: auto; }
+  .about-animation-container, .img-main-02-1 { width: 100%; height: auto; }
+  .about-visual::before { inset: 0; background-position: 87% 65%; }
+  .about-visual::after { inset: 6% 0; }
+  .about-road { left: 0; width: 100%; bottom: 7%; }
+  .about-story { max-width: 55ch; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .about-car-arrival,
   .about-animation-container,
-  .img-main-02-1 {
-    animation: none;
-  }
-}
-
-@media (max-width: 27rem) {
-  .about-facts {
-    grid-template-columns: 1fr;
-  }
-
-  .about-facts > div,
-  .about-facts > div:first-child {
-    display: grid;
-    align-items: baseline;
-    padding: 0.65rem 0;
-    border-top: 0.0625rem solid var(--line-soft);
-    border-left: 0;
-    grid-template-columns: minmax(6rem, 0.8fr) 1fr;
-    gap: 0.75rem;
-  }
-
-  .about-facts > div:first-child {
-    padding-top: 0;
-    border-top: 0;
-  }
-
-  .about-facts dd {
-    margin-top: 0;
-  }
+  .img-main-02-1,
+  .about-road::after { animation: none; }
 }

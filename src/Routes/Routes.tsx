@@ -1,22 +1,30 @@
 import { Route, Routes, Navigate } from "react-router-dom"
-import About from "../pages/About/About"
 import Homepage from "../pages/Homepage/Homepage"
-import Clothes from "../pages/Clothes/Clothes"
-import Wishlist from "../pages/Wishlist/Wishlist"
-import Items from "../pages/Items/Items"
-import MostBuyed from "../pages/MostBuyed/MostBuyed"
-import ShoppingBag from "../pages/ShoppingBag/ShoppingBag"
-import { FC } from "react"
-import ProductPage from "../pages/ProductPage/ProductPage"
-import LogIn from "../pages/LogIn/LogInPage"
+import { type FC, lazy, Suspense } from "react"
 import PrivateRoutes from "./PrivateRoutes"
 import StoreLayout from "../components/Layout/storeLayout"
-import NotFound from "../pages/NotFound/NotFound"
+import { pageImports } from "./pageImports"
+import { LoginSkeleton } from "../components/ui/Skeleton/routeSkeleton"
+import RouteBoundary from "./routeBoundary"
+
+const About = lazy(pageImports.about)
+const ProductPage = lazy(pageImports.product)
+const LogIn = lazy(pageImports.login)
+const ShoppingBag = lazy(pageImports.bag)
+const Wishlist = lazy(pageImports.wishlist)
+const Clothes = lazy(pageImports.clothes)
+const Items = lazy(pageImports.items)
+const MostBuyed = lazy(pageImports.wanted)
+const NotFound = lazy(pageImports.missing)
 
 const RoutesComponent: FC = () => {
   return (
     <Routes>
-      <Route path="/login" element={<LogIn />} />
+      <Route path="/login" element={
+        <RouteBoundary><Suspense fallback={<LoginSkeleton />}>
+          <LogIn />
+        </Suspense></RouteBoundary>
+      } />
       <Route element={<PrivateRoutes />}>
         <Route element={<StoreLayout />}>
           <Route path="/homepage" element={<Homepage />} />

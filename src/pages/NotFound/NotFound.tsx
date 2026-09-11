@@ -7,7 +7,7 @@ const NotFound = () => {
   return (
     <section className="not-found" aria-labelledby="not-found-title">
       <div className="not-found-panel">
-        <span className="not-found-kicker">West City archive / timeline error</span>
+        <span className="not-found-kicker">404</span>
         <p className="sr-only">Error 404</p>
         <div className="not-found-code" aria-hidden="true">
           <span>4</span>

@@ -1,42 +1,16 @@
 .frame {
-  position: relative;
   display: grid;
-  width: min(calc(100% - (var(--page-gutter) * 2)), var(--content-width));
-  justify-content: center;
+  width: var(--page-width);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--grid-gap);
   margin: 0 auto;
-  padding: clamp(1rem, 2.2vw, 1.75rem) 0 clamp(3rem, 5vw, 4.5rem);
-  grid-template-columns: repeat(6, minmax(0, 11.75rem));
-  gap: clamp(0.75rem, 1.6vw, 1.25rem);
+  padding: var(--space-6) 0 0;
 }
 
-@media (max-width: 80rem) {
-  .frame {
-    grid-template-columns: repeat(5, minmax(0, 11.75rem));
-  }
+@media (max-width: 64rem) {
+  .frame { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 }
 
-@media (max-width: 65rem) {
-  .frame {
-    grid-template-columns: repeat(4, minmax(0, 11.75rem));
-  }
-}
-
-@media (max-width: 51rem) {
-  .frame {
-    grid-template-columns: repeat(3, minmax(0, 11.75rem));
-  }
-}
-
-@media (max-width: 38rem) {
-  .frame {
-    width: min(calc(100% - 1rem), 35rem);
-    grid-template-columns: repeat(2, minmax(0, 11.25rem));
-    gap: 0.65rem;
-  }
-}
-
-@media (max-width: 21.875rem) {
-  .frame {
-    grid-template-columns: minmax(0, 11.25rem);
-  }
+@media (max-width: 42rem) {
+  .frame { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem; padding-top: 1.25rem; }
 }

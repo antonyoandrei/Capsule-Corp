@@ -1,5 +1,6 @@
 import { FC, ReactNode } from "react"
 import { NavLink } from "react-router-dom"
+import "../StoreButton/store-button.css"
 import "./data-state.css"
 
 interface DataStateProps {
@@ -11,32 +12,32 @@ interface DataStateProps {
   variant?: "empty" | "error" | "missing"
 }
 
-const stateLabels = {
-  empty: "Dragon Radar / no signal",
-  error: "Dragon Radar / signal lost",
-  missing: "Dragon Radar / timeline missing",
-}
+export const DragonRadar = ({ className = "", searching = true }: { className?: string; searching?: boolean }) => (
+  <div className={`data-state-visual ${className}`} aria-hidden="true">
+    <span className="data-state-radar">
+      {searching ? (
+        <>
+          <span className="data-state-radar-sweep" />
+          <span className="data-state-signal" />
+        </>
+      ) : <span className="data-state-radar-mark" />}
+    </span>
+  </div>
+)
 
 const DataState: FC<DataStateProps> = ({ title, children, actionLabel, onAction, to, variant = "empty" }) => {
   return (
     <section className={`data-state data-state-${variant}`} role={variant === "error" ? "alert" : "status"}>
       <div className="data-state-card">
-        <div className="data-state-visual" aria-hidden="true">
-          <span className="data-state-radar">
-            <span className="data-state-ball">
-              <span className="data-state-stars"><i>★</i><i>★</i><i>★</i><i>★</i></span>
-            </span>
-          </span>
-        </div>
+        <DragonRadar searching={variant === "empty"} />
         <div className="data-state-copy">
-          <span className="data-state-kicker">{stateLabels[variant]}</span>
           <h2>{title}</h2>
           <p>{children}</p>
           {to && actionLabel ? (
-            <NavLink className="data-state-action" to={to}>{actionLabel}<span aria-hidden="true">→</span></NavLink>
+            <NavLink className="data-state-action store-button store-button--text" to={to}>{actionLabel}</NavLink>
           ) : null}
           {onAction && actionLabel ? (
-            <button type="button" className="data-state-action" onClick={onAction}>{actionLabel}<span aria-hidden="true">↻</span></button>
+            <button type="button" className="data-state-action store-button store-button--text" onClick={onAction}>{actionLabel}</button>
           ) : null}
         </div>
       </div>

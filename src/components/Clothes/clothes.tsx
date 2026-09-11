@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { ClothesContext } from "../Fetch/clothes-fetch"
+import { ClothesContext } from "../Fetch/clothes-context"
 import CatalogView from "../Catalog/catalogView"
 
 const ClothesComponent = () => {
@@ -7,7 +7,6 @@ const ClothesComponent = () => {
 
   return (
     <CatalogView
-      kicker="Collection"
       title="Clothes"
       products={clothes}
       loading={loading}

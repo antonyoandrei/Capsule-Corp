@@ -1,16 +1,1 @@
-.bg-comics {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: var(--paper) url(https://res.cloudinary.com/du94mex28/image/upload/v1695898505/bgs/bg-custom_jzds5v.jpg) center top / cover no-repeat;
-}
-
-.bg-comics::after {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(255, 254, 250, 0.02), rgba(246, 242, 233, 0.08)),
-    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.15), transparent 55%);
-  content: "";
-  pointer-events: none;
-}
+.bg-comics { display: none; }

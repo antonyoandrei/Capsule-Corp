@@ -1,49 +1,35 @@
-.skip-link {
-  position: absolute;
-  top: -4rem;
-  left: 1rem;
-  z-index: var(--z-skip);
-  padding: 0.65rem 1rem;
-  background: var(--clr-black);
-  color: var(--primary-yellow);
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.skip-link:focus {
-  top: 1rem;
-}
-
-.page-view {
-  position: relative;
-  display: flow-root;
-  min-height: calc(100dvh - var(--nav-height));
-}
-
-.page-view:focus {
-  outline: none;
-}
-
-.route-content {
-  animation: route-content-enter 180ms var(--ease-out);
-}
-
+.skip-link { position: fixed; top: 1rem; left: 1rem; z-index: var(--z-skip); max-width: calc(100% - 2rem); padding: 0.8rem 1rem; border-radius: 999px; background: var(--primary-yellow); color: var(--clr-black); font-size: 0.85rem; transform: translateY(calc(-100% - 1rem)); pointer-events: none; }
+.skip-link:focus-visible { transform: none; pointer-events: auto; }
+.page-view { position: relative; display: flow-root; width: 100%; min-height: calc(100svh - var(--nav-height) - var(--space-6)); }
+.page-view:focus { outline: none; }
+.route-content { position: relative; padding-top: var(--section-gap); padding-bottom: var(--space-5); animation: route-content-enter 180ms ease-out; }
+.store-footer { position: relative; width: var(--page-width); margin: var(--section-gap) auto 0; padding: var(--space-6) 0 max(2rem, env(safe-area-inset-bottom)); color: var(--clr-black); }
+.footer-signature { display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); padding: 0 var(--space-4) var(--space-6) 0; }
+.footer-wordmark { font-family: var(--font-display); font-size: clamp(3.5rem, 10.9vw, 9.75rem); font-weight: 700; letter-spacing: -.055em; line-height: 1; text-transform: uppercase; }
+.footer-wordmark span { color: transparent; -webkit-text-stroke: 1.5px var(--clr-black); }
+.footer-seal { display: grid; flex: 0 0 clamp(4rem, 10vw, 8.25rem); place-items: center; transform: rotate(-12deg); transition: transform 650ms var(--ease-out); }
+.footer-seal img { width: 100%; height: auto; filter: invert(1); }
+.footer-seal:hover { transform: rotate(-12deg) scale(1.04); }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--clr-black); }
+.store-footer nav { display: flex; flex-wrap: wrap; gap: .5rem var(--space-6); }
+.store-footer nav a { display: inline-flex; min-height: 2.75rem; align-items: center; font-size: .85rem; transition: color var(--motion-fast); }
+.store-footer nav a:hover { color: var(--gold); }
+.checkout-card .checkout-container { border-radius: 1.35rem; background: linear-gradient(110deg, rgba(12, 20, 24, 0.98), rgba(12, 20, 24, 0.9)), var(--manga-art) 5% 65% / 180% auto; color: var(--clr-white); border-color: #6e6030; box-shadow: none; }
+.checkout-card .checkout-container::before { display: none; }
+.checkout-card .checkout-heading h2 { font-family: var(--font-display); font-size: clamp(2.25rem, 4vw, 3.25rem); line-height: 1.05; }
 @keyframes route-content-enter {
-  from {
-    opacity: 0.72;
-    transform: translate3d(0, 0.18rem, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+  from { opacity: .7; transform: translateY(.2rem); }
+  to { opacity: 1; transform: none; }
 }
-
-@media (max-width: 43.75rem) {
-  .page-view {
-    min-height: 100dvh;
-    padding-bottom: calc(5.35rem + env(safe-area-inset-bottom));
-  }
+.route-skeleton { animation: none; }
+.route-error { display: grid; justify-items: start; align-content: center; gap: var(--space-5); width: var(--page-width); min-height: 60svh; margin-inline: auto; padding-block: var(--section-gap); }
+.route-error h1 { font-size: clamp(2.25rem, 5vw, 4rem); line-height: 1.1; }
+.route-error p { color: var(--ink-soft); }
+@media (max-width: 37.5rem) {
+  .footer-signature { gap: var(--space-3); }
+  .footer-wordmark { font-size: clamp(2.75rem, 14vw, 5.5rem); }
+  .footer-wordmark span { display: block; }
+  .footer-seal { flex-basis: clamp(3.75rem, 18vw, 5rem); }
+  .footer-bottom { flex-wrap: wrap; gap: var(--space-3); }
+  .store-footer nav { width: 100%; justify-content: space-between; gap: var(--space-2); }
 }

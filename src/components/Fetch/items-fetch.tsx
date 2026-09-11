@@ -1,20 +1,7 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { fetchProducts, productEndpoints, readCachedProducts } from "../../services/products";
 import { clProduct } from "../../types/interface";
-
-interface ItemsContextProps {
-  items: clProduct[];
-  loading: boolean;
-  error: string | null;
-  refetch: () => void;
-}
-
-const ItemsContext = createContext<ItemsContextProps>({
-  items: [],
-  loading: true,
-  error: null,
-  refetch: () => undefined,
-});
+import { ItemsContext } from "./items-context";
 
 const ItemsProvider = ({ children }: { children: ReactNode }) => {
   const [initialItems] = useState<clProduct[] | null>(() => readCachedProducts(productEndpoints.items));
@@ -22,18 +9,22 @@ const ItemsProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(initialItems === null);
   const [error, setError] = useState<string | null>(null);
   const [requestKey, setRequestKey] = useState(0);
+  const hasData = useRef(initialItems !== null);
+  const refetch = useCallback(() => setRequestKey(value => value + 1), []);
 
   useEffect(() => {
-    if (requestKey === 0 && initialItems !== null) return;
-
     const controller = new AbortController();
-    setLoading(true);
+    setLoading(!hasData.current);
     setError(null);
 
     fetchProducts(productEndpoints.items, controller.signal, requestKey > 0)
-      .then(setItems)
+      .then(products => {
+        if (controller.signal.aborted) return;
+        hasData.current = true;
+        setItems(products);
+      })
       .catch(requestError => {
-        if (requestError instanceof DOMException && requestError.name === "AbortError") return;
+        if (controller.signal.aborted) return;
         setError(requestError instanceof Error ? requestError.message : "Could not load items.");
       })
       .finally(() => {
@@ -41,9 +32,10 @@ const ItemsProvider = ({ children }: { children: ReactNode }) => {
       });
 
     return () => controller.abort();
-  }, [initialItems, requestKey]);
+  }, [requestKey]);
 
-  return <ItemsContext.Provider value={{ items, loading, error, refetch: () => setRequestKey(value => value + 1) }}>{children}</ItemsContext.Provider>;
+  const value = useMemo(() => ({ items, loading, error, refetch }), [items, loading, error, refetch]);
+  return <ItemsContext.Provider value={value}>{children}</ItemsContext.Provider>;
 };
 
-export { ItemsProvider, ItemsContext };
+export { ItemsProvider };
